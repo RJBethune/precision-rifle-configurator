@@ -1,0 +1,4382 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Precision Rifle Configurator</title>
+  <link rel="preconnect" href="https://rsms.me/">
+  <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+  <style>
+    :root{
+      --ink:#0f172a;
+      --muted:#64748b;
+      --accent:#3f5f7a;
+      --accent-dark:#223548;
+      --accent-soft:#e3eaf2;
+      --accent-glow:rgba(63,95,122,.2);
+      --panel:#ffffff;
+      --panel-border:#d7dce3;
+      --bg:#f3f4f6;
+      --shadow:0 20px 50px rgba(15,23,42,.08), 0 2px 10px rgba(15,23,42,.06);
+      --radius:18px;
+      --radius-sm:12px;
+      --space-1:6px;
+      --space-2:10px;
+      --space-3:14px;
+      --space-4:18px;
+      --space-5:24px;
+      --space-6:32px;
+      --space-7:40px;
+      --space-8:48px;
+      --space-9:64px;
+      --text-xs:11px;
+      --text-sm:12px;
+      --text-md:14px;
+      --text-lg:18px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:"Inter","Segoe UI","Helvetica Neue",Arial,sans-serif;
+      color:var(--ink);
+      background:
+        radial-gradient(900px 420px at 10% -10%, #ffffff 0%, rgba(255,255,255,0) 70%),
+        radial-gradient(900px 520px at 110% 10%, #e3eaf5 0%, rgba(227,234,245,0) 65%),
+        linear-gradient(120deg, #f1f4f8, #f8fafc);
+      min-height:100vh;
+    }
+    img{display:block;max-width:100%}
+    .page{max-width:1100px;margin:var(--space-6) auto var(--space-8);padding:0 var(--space-5)}
+    .screen-only{display:block}
+    .print-only{display:none}
+    .brand-inline{
+      display:flex;
+      align-items:center;
+      flex:0 0 auto;
+    }
+    .brand-logo{
+      width:104px;
+      height:104px;
+      object-fit:contain;
+      filter:drop-shadow(0 10px 18px rgba(15,23,42,.18));
+    }
+    .badge-row{
+      display:flex;
+      justify-content:flex-end;
+      gap:var(--space-2);
+      margin-bottom:var(--space-2);
+    }
+    .app-header{
+      display:flex;
+      align-items:center;
+      gap:var(--space-4);
+      justify-content:flex-start;
+      padding:var(--space-4) var(--space-5);
+      border:1px solid var(--panel-border);
+      border-radius:24px;
+      background:var(--panel);
+      box-shadow:var(--shadow);
+      position:relative;
+      overflow:hidden;
+    }
+    .title-block{flex:1;min-width:0}
+    .eyebrow{
+      text-transform:uppercase;
+      letter-spacing:.22em;
+      font-size:var(--text-xs);
+      color:var(--accent-dark);
+      font-weight:700;
+    }
+    h1{
+      margin:4px 0 0 0;
+      font-family:"Inter","Segoe UI","Helvetica Neue",Arial,sans-serif;
+      font-size:26px;
+      letter-spacing:.5px;
+      font-weight:700;
+      color:var(--accent-dark);
+    }
+    .sub{color:var(--muted);margin-top:4px;font-size:var(--text-sm);line-height:1.5}
+    .badge{
+      border:1px solid var(--panel-border);
+      padding:var(--space-1) var(--space-2);
+      border-radius:999px;
+      font-size:var(--text-xs);
+      text-transform:uppercase;
+      letter-spacing:.16em;
+      background:var(--accent-soft);
+      color:var(--accent-dark);
+      box-shadow:0 6px 14px rgba(15,23,42,.08);
+    }
+    .badge.options-status{
+      background:#e7eef6;
+      color:#1f2a37;
+    }
+    .badge.options-status.error{
+      background:#fee2e2;
+      border-color:#fecaca;
+      color:#b42318;
+    }
+    main{margin-top:var(--space-5);display:grid;gap:72px}
+    .card{
+      background:var(--panel);
+      border:1px solid var(--panel-border);
+      border-radius:var(--radius);
+      padding:var(--space-4);
+      box-shadow:var(--shadow);
+      margin:0 0 10px 0;
+      position:relative;
+      overflow:hidden;
+    }
+    .section-title{margin-bottom:var(--space-3)}
+    .section-kicker{
+      font-size:var(--text-xs);
+      text-transform:uppercase;
+      letter-spacing:.2em;
+      color:var(--accent);
+      font-weight:700;
+    }
+    .section-title h2{
+      margin:4px 0 0 0;
+      font-size:19px;
+      font-family:"Inter","Segoe UI","Helvetica Neue",Arial,sans-serif;
+      font-weight:700;
+      color:var(--accent-dark);
+    }
+    .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-3)}
+    .group-label{
+      grid-column:1/-1;
+      font-size:var(--text-xs);
+      letter-spacing:.2em;
+      text-transform:uppercase;
+      color:var(--muted);
+      border-top:1px dashed #d7dde6;
+      padding-top:var(--space-2);
+      margin-top:var(--space-2);
+    }
+    .group-label.first{
+      border-top:none;
+      padding-top:0;
+      margin-top:0;
+    }
+    label{
+      font-size:var(--text-xs);
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      color:var(--muted);
+      display:block;
+      margin-bottom:var(--space-1);
+    }
+    label.required-indicator::after{
+      content:" *";
+      color:#b42318;
+      font-weight:700;
+      letter-spacing:0;
+      text-transform:none;
+    }
+    .required-legend{
+      margin-top:var(--space-2);
+      font-size:var(--text-xs);
+      color:var(--muted);
+    }
+    select,input,textarea{
+      width:100%;
+      padding:var(--space-2) var(--space-3);
+      border:1px solid #cfd5dd;
+      border-radius:var(--radius-sm);
+      background:#f7fafc;
+      font:inherit;
+      color:inherit;
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.85);
+      transition:border-color .15s ease, box-shadow .15s ease, background .15s ease;
+    }
+    select:hover,input:hover,textarea:hover{
+      border-color:#b8c5d3;
+    }
+    ::placeholder{
+      color:#94a3b8;
+    }
+    textarea{line-height:1.5}
+    select[multiple]{
+      min-height:120px;
+      padding:8px 10px;
+    }
+    .multi-controls{
+      display:grid;
+      grid-template-columns:minmax(0,1fr) auto;
+      gap:var(--space-2);
+      align-items:end;
+    }
+    .multi-selected{
+      margin-top:var(--space-2);
+      display:flex;
+      flex-wrap:wrap;
+      gap:var(--space-2);
+    }
+    .multi-pill{
+      display:flex;
+      align-items:center;
+      gap:var(--space-2);
+      padding:var(--space-1) var(--space-2);
+      border:1px solid #cfe0e4;
+      border-radius:999px;
+      background:#f5f9ff;
+      font-size:var(--text-sm);
+    }
+    .multi-pill button{
+      border:none;
+      background:transparent;
+      padding:0;
+      font-size:14px;
+      line-height:1;
+      cursor:pointer;
+      color:var(--accent-dark);
+    }
+    select:focus,input:focus,textarea:focus{
+      outline:none;
+      border-color:var(--accent);
+      box-shadow:0 0 0 3px var(--accent-glow);
+      background:#fff;
+    }
+    .actions{display:flex;gap:var(--space-2);flex-wrap:wrap}
+    button{
+      padding:var(--space-2) var(--space-4);
+      border-radius:12px;
+      border:1px solid #cfd5dd;
+      background:#fff;
+      font-weight:600;
+      cursor:pointer;
+      font:inherit;
+    }
+    button.primary{
+      border-color:var(--accent);
+      background:linear-gradient(135deg, #3f5f7a, #2a4258);
+      color:#fff;
+    }
+    button:hover{transform:translateY(-1px);box-shadow:0 6px 12px rgba(0,0,0,.08)}
+    button.primary:hover{box-shadow:0 10px 18px rgba(63,95,122,.35)}
+    .twoLine{grid-column:1/-1}
+    .callout{
+      margin-top:var(--space-3);
+      padding:var(--space-2) var(--space-3);
+      border-radius:12px;
+      border:1px solid #d7dde6;
+      background:#eef2f6;
+      color:var(--accent-dark);
+      font-size:var(--text-sm);
+    }
+    .action-card{
+      background:linear-gradient(120deg, #eef3f7 0%, #ffffff 45%, #e5ecf4 100%);
+    }
+    .action-card .sub{margin-top:10px}
+    .summary-card{
+      background:linear-gradient(120deg, #eef3f7 0%, #ffffff 55%, #e6edf6 100%);
+    }
+    .summary-grid{
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:var(--space-3);
+      align-items:end;
+    }
+    .summary-item{
+      border:1px solid #d7dde6;
+      border-radius:14px;
+      padding:var(--space-3) var(--space-4);
+      background:#fdfefe;
+    }
+    .summary-item::after{
+      content:"";
+      display:block;
+      width:38px;
+      height:2px;
+      margin-top:var(--space-2);
+      background:linear-gradient(90deg, var(--accent), rgba(63,95,122,.2));
+    }
+    .summary-label{
+      font-size:var(--text-xs);
+      letter-spacing:.16em;
+      text-transform:uppercase;
+      color:var(--muted);
+    }
+    .summary-value{
+      margin-top:6px;
+      font-size:18px;
+      font-weight:700;
+      color:var(--accent-dark);
+    }
+    .summary-input label{margin-bottom:4px}
+    .summary-input input{background:#fff}
+    .summary-note{
+      margin-top:var(--space-2);
+      font-size:var(--text-xs);
+      color:var(--muted);
+    }
+    .completeness-card{
+      margin-top:var(--space-3);
+      border:1px solid #d7dde6;
+      border-radius:14px;
+      padding:var(--space-3);
+      background:#fdfefe;
+    }
+    .completeness-head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:var(--space-2);
+      margin-bottom:var(--space-2);
+    }
+    .completeness-label{
+      font-size:var(--text-xs);
+      letter-spacing:.16em;
+      text-transform:uppercase;
+      color:var(--muted);
+    }
+    .completeness-pct{
+      font-size:22px;
+      font-weight:700;
+      color:var(--accent-dark);
+      line-height:1;
+    }
+    .completeness-track{
+      width:100%;
+      height:10px;
+      background:#e8eef5;
+      border-radius:999px;
+      overflow:hidden;
+      border:1px solid #d3dbe5;
+    }
+    .completeness-fill{
+      height:100%;
+      width:0%;
+      background:linear-gradient(90deg, #607d9a, #385973);
+      transition:width .2s ease;
+    }
+    .completeness-fill.ready{
+      background:linear-gradient(90deg, #2f7a4d, #1f6f3a);
+    }
+    .completeness-meta{
+      margin-top:var(--space-2);
+      font-size:var(--text-sm);
+      color:var(--ink);
+    }
+    .completeness-missing{
+      margin-top:var(--space-1);
+      font-size:var(--text-xs);
+      color:var(--muted);
+    }
+    .review-grid{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:var(--space-4);
+    }
+    .review-block{
+      border:1px solid #d7dde6;
+      border-radius:14px;
+      padding:var(--space-3);
+      background:#f4f8fc;
+    }
+    .review-label{
+      font-size:var(--text-xs);
+      letter-spacing:.16em;
+      text-transform:uppercase;
+      color:var(--accent-dark);
+      font-weight:700;
+      margin-bottom:var(--space-2);
+    }
+    .review-value{
+      font-size:var(--text-sm);
+      color:var(--ink);
+      margin-bottom:var(--space-1);
+      line-height:1.5;
+    }
+    .review-value:last-child{margin-bottom:0}
+    .review-note{
+      margin-top:var(--space-2);
+      font-size:var(--text-xs);
+      color:var(--muted);
+    }
+    .review-actions{
+      margin-top:var(--space-4);
+      display:flex;
+      justify-content:flex-end;
+      gap:var(--space-2);
+    }
+    .editor-card{
+      background:linear-gradient(120deg, #f0f4f8 0%, #ffffff 55%, #e9eff6 100%);
+    }
+    .hidden{
+      display:none !important;
+    }
+    .sr-only{
+      position:absolute;
+      width:1px;
+      height:1px;
+      padding:0;
+      margin:-1px;
+      overflow:hidden;
+      clip:rect(0, 0, 0, 0);
+      white-space:nowrap;
+      border:0;
+    }
+    .editor-card.hidden{
+      display:none;
+    }
+    .editor-mode{
+      display:flex;
+      gap:var(--space-2);
+      margin-bottom:var(--space-3);
+      flex-wrap:wrap;
+    }
+    .editor-mode button{
+      border-color:#b7c5d6;
+      background:#eef3f9;
+      color:#223548;
+    }
+    .editor-mode button.active{
+      border-color:var(--accent);
+      background:linear-gradient(135deg, #3f5f7a, #2a4258);
+      color:#fff;
+    }
+    .editor-toolbar{
+      display:grid;
+      grid-template-columns:minmax(0,1fr) auto;
+      gap:var(--space-3);
+      align-items:end;
+      margin-bottom:var(--space-2);
+    }
+    .editor-actions{
+      display:flex;
+      gap:var(--space-2);
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+    .editor-textarea{
+      min-height:240px;
+      font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+      font-size:12px;
+    }
+    .editor-status{
+      margin-top:var(--space-2);
+      font-size:var(--text-sm);
+    }
+    .editor-status.ok{color:#1f6f3a}
+    .editor-status.error{color:#b42318}
+    .editor-note{
+      margin-top:var(--space-2);
+      font-size:var(--text-xs);
+      color:var(--muted);
+    }
+    .simple-editor-message{
+      margin:0 0 var(--space-2) 0;
+      font-size:var(--text-xs);
+      color:var(--muted);
+    }
+    .simple-table-wrap{
+      border:1px solid #cfd9e6;
+      border-radius:12px;
+      background:#fff;
+      overflow:auto;
+      max-height:420px;
+    }
+    .simple-table{
+      width:100%;
+      border-collapse:collapse;
+      min-width:760px;
+      font-size:12px;
+    }
+    .simple-table th{
+      position:sticky;
+      top:0;
+      z-index:1;
+      background:#eef3f9;
+      text-align:left;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      font-size:10px;
+      color:#334155;
+      padding:8px;
+      border-bottom:1px solid #d6e0ec;
+      white-space:nowrap;
+    }
+    .simple-table td{
+      padding:8px;
+      border-top:1px solid #edf2f7;
+      vertical-align:top;
+    }
+    .simple-table input,
+    .simple-table select{
+      min-width:120px;
+      padding:8px 10px;
+      font-size:12px;
+      border-radius:10px;
+      background:#fbfdff;
+    }
+    .simple-table .row-remove{
+      padding:8px 10px;
+      border-radius:10px;
+      border:1px solid #e0b4b4;
+      background:#fff5f5;
+      color:#8d2020;
+      white-space:nowrap;
+    }
+    .simple-actions{
+      margin-top:var(--space-2);
+    }
+    .accessory-controls{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:end}
+    .accessory-selected{margin-top:10px;display:flex;flex-wrap:wrap;gap:8px}
+    .accessory-pill{display:flex;align-items:center;gap:8px;padding:6px 10px;border:1px solid #cfe0e4;border-radius:999px;background:#f5f9ff;font-size:12px}
+    .accessory-pill button{border:none;background:transparent;padding:0;font-size:14px;line-height:1;cursor:pointer;color:var(--accent-dark)}
+    .receipt{
+      padding:12px 0;
+      position:relative;
+    }
+    .receipt-watermark{
+      position:absolute;
+      inset:0;
+      display:grid;
+      place-items:center;
+      pointer-events:none;
+      opacity:.06;
+      z-index:0;
+    }
+    .receipt-watermark img{
+      width:340px;
+      height:340px;
+      object-fit:contain;
+    }
+    .receipt-header{
+      display:flex;
+      justify-content:space-between;
+      gap:18px;
+      align-items:center;
+      border-bottom:2px solid #2b2f36;
+      padding-bottom:12px;
+      margin-bottom:16px;
+      position:relative;
+      z-index:1;
+    }
+    .receipt-brand{display:flex;gap:12px;align-items:center}
+    .receipt-logo{width:56px;height:56px;object-fit:contain}
+    .receipt-title{font-size:20px;font-weight:700}
+    .receipt-meta{font-size:11px;color:#444;margin-top:4px}
+    .receipt-id{
+      font-size:11px;
+      letter-spacing:.2em;
+      text-transform:uppercase;
+      border:1px solid #111;
+      padding:6px 10px;
+      text-align:right;
+      background:#111;
+      color:#fff;
+      font-weight:700;
+      white-space:nowrap;
+      display:inline-block;
+    }
+    .receipt-grid{
+      column-count:2;
+      column-gap:18px;
+      position:relative;
+      z-index:1;
+    }
+    .receipt-section{
+      border:1px solid #2b2f36;
+      padding:10px 12px;
+      break-inside:avoid;
+      margin-bottom:12px;
+    }
+    .receipt-section h3{
+      margin:0 0 8px 0;
+      font-size:11px;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+    }
+    .receipt-row{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      font-size:11px;
+      padding:4px 0;
+      border-bottom:1px dashed #777;
+    }
+    .receipt-row:last-child{border-bottom:none}
+    .receipt-row.weight-summary{
+      margin-top:6px;
+      padding:2px 0 0 0;
+      border-top:none;
+      border-bottom:none;
+      justify-content:flex-end;
+      gap:12px;
+    }
+    .receipt-row.weight-summary .receipt-key{
+      font-weight:400;
+      text-align:right;
+    }
+    .receipt-row.weight-summary .receipt-value{
+      font-weight:700;
+      text-align:right;
+      max-width:none;
+    }
+    .receipt-key{font-weight:600}
+    .receipt-value{text-align:right;max-width:60%}
+    .receipt-notes{
+      margin-top:14px;
+      border:1px solid #2b2f36;
+      padding:10px 12px;
+    }
+    .receipt-notes-label{
+      font-size:11px;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      margin-bottom:6px;
+      font-weight:700;
+    }
+    .receipt-notes-text{font-size:11px;white-space:pre-wrap}
+    .receipt-warnings,
+    .receipt-warranty{
+      margin-top:14px;
+      border:1px solid #2b2f36;
+      padding:10px 12px;
+    }
+    .receipt-warranty{
+      border:none;
+      padding:0;
+      margin-top:10px;
+      text-align:left;
+      font-size:12px !important;
+      letter-spacing:0;
+      color:var(--accent-dark);
+    }
+    .receipt-warnings{
+      background:#fff7ed;
+    }
+    .receipt-warnings-label{
+      font-size:11px;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      margin-bottom:6px;
+      font-weight:700;
+    }
+    .receipt-warnings-text,
+    .receipt-warranty-text{
+      font-size:10px !important;
+      white-space:pre-wrap;
+      line-height:1.5;
+    }
+    .receipt-warranty-text{
+      font-size:inherit;
+      letter-spacing:inherit;
+    }
+    .receipt-footer{
+      margin-top:12px;
+      text-align:center;
+      font-size:10px;
+      text-transform:uppercase;
+      letter-spacing:.2em;
+      color:var(--accent-dark);
+      position:relative;
+      z-index:1;
+    }
+    .receipt-bottom{
+      position:absolute;
+      left:0;
+      right:0;
+      bottom:0;
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+    .receipt-bottom .receipt-signature{
+      margin-top:0;
+    }
+    .receipt-bottom .receipt-footer{
+      margin-top:0;
+    }
+    .receipt-footer-contact{
+      font-size:9px;
+      letter-spacing:.12em;
+      white-space:nowrap;
+    }
+    .receipt-signature{
+      margin-top:12px;
+      display:flex;
+      justify-content:flex-end;
+      gap:18px;
+      font-size:11px;
+      align-items:center;
+      position:relative;
+      z-index:1;
+      flex-wrap:wrap;
+    }
+    .signature-line{
+      border-bottom:1px solid #2b2f36;
+      min-width:220px;
+      height:16px;
+    }
+    .signature-field{
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+    .receipt-cost{
+      margin-top:6px;
+      padding-top:0;
+    }
+    .receipt-cost-title{
+      font-size:11px;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      margin-bottom:8px;
+    }
+    .receipt-cost-row{
+      display:grid;
+      grid-template-columns:1fr auto;
+      gap:12px;
+      font-size:11px;
+      padding:4px 0;
+      border-bottom:1px dashed #777;
+    }
+    .receipt-cost-row:last-child{border-bottom:none}
+    .receipt-cost-head{
+      font-weight:700;
+      border-bottom:none;
+      padding-bottom:0;
+      margin-bottom:4px;
+    }
+    .receipt-cost-num{text-align:right;min-width:84px}
+    .receipt-cost-summary{
+      margin-top:8px;
+      display:flex;
+      justify-content:flex-end;
+      gap:16px;
+      flex-wrap:wrap;
+      font-size:11px;
+    }
+    .receipt-cost-summary strong{
+      font-weight:700;
+    }
+    @media (max-width: 900px){
+      .app-header{flex-direction:column;align-items:flex-start}
+      .badge-row{width:100%;justify-content:flex-end}
+      .summary-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .review-grid{grid-template-columns:1fr}
+    }
+    @media (max-width: 720px){
+      .grid{grid-template-columns:1fr}
+      .page{padding:0 18px}
+      .summary-grid{grid-template-columns:1fr}
+      .accessory-controls{grid-template-columns:1fr}
+      .multi-controls{grid-template-columns:1fr}
+      .review-actions{justify-content:stretch}
+      .review-actions button{width:100%}
+      .editor-mode button{width:100%}
+      .editor-toolbar{grid-template-columns:1fr}
+      .editor-actions{justify-content:stretch}
+      .editor-actions button{width:100%}
+      .simple-table{min-width:560px}
+    }
+    @media print{
+      @page{margin:0.5in; size: letter;}
+      body{background:#fff}
+      .page{max-width:none;margin:0;padding:0}
+      .screen-only{display:none !important}
+      .print-only{display:block !important}
+      .receipt{
+        font-family:"Inter","Segoe UI","Helvetica Neue",Arial,sans-serif;
+        color:#111;
+        padding:0;
+        position:relative;
+        min-height:calc(11in - 1in);
+        padding-bottom:var(--bottom-reserve, 0px);
+        --print-scale:1;
+        transform:scale(var(--print-scale));
+        transform-origin:top left;
+        width:calc(100% / var(--print-scale));
+      }
+      .receipt-id{
+        border-color:#111;
+        background:#111 !important;
+        color:#fff !important;
+        -webkit-print-color-adjust:exact;
+        print-color-adjust:exact;
+      }
+      .receipt-grid{column-count:2}
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page">
+    <div class="badge-row screen-only">
+      <div class="badge">Offline</div>
+      <div class="badge">Autosave</div>
+      <div class="badge options-status" id="optionsStatus" role="status" aria-live="polite">Options: loading...</div>
+    </div>
+    <header class="app-header screen-only">
+      <div class="brand-inline">
+        <img src="assets/logo.png" alt="American Precision Rifleworks logo" class="brand-logo" />
+      </div>
+      <div class="title-block">
+        <div class="eyebrow">American Precision Rifleworks</div>
+        <h1>PRECISION RIFLE CONFIGURATOR</h1>
+        <div class="sub">Select components below, add accessories, and confirm pricing. Totals update live with MSRP, internal cost, and discounts. Autosaves locally—use Print to PDF for the customer build sheet.</div>
+      </div>
+    </header>
+
+    <section class="receipt print-only" id="receipt">
+      <div class="receipt-watermark">
+        <img src="assets/logo.png" alt="American Precision Rifleworks watermark" />
+      </div>
+      <div class="receipt-header">
+        <div class="receipt-brand">
+          <img src="assets/logo.png" alt="American Precision Rifleworks logo" class="receipt-logo" />
+          <div>
+            <div class="receipt-title">PRECISION RIFLE BUILD SHEET</div>
+            <div class="receipt-meta" id="receiptMeta"></div>
+          </div>
+        </div>
+        <div class="receipt-id" id="receiptId"></div>
+      </div>
+      <div class="receipt-grid" id="receiptGrid"></div>
+      <div class="receipt-warnings" id="receiptWarnings" style="display:none;">
+        <div class="receipt-warnings-label">Compatibility</div>
+        <div class="receipt-warnings-text" id="receiptWarningsText"></div>
+      </div>
+      <div class="receipt-notes" id="receiptNotesWrap">
+        <div class="receipt-notes-label">Notes</div>
+        <div class="receipt-notes-text" id="receiptNotes"></div>
+      </div>
+      <div class="receipt-bottom">
+        <div class="receipt-signature">
+          <div class="signature-field">
+            <div>Signature</div>
+            <div class="signature-line"></div>
+          </div>
+          <div class="signature-field">
+            <div>Date</div>
+            <div class="signature-line" style="min-width:140px;"></div>
+          </div>
+        </div>
+        <div class="receipt-warranty receipt-warranty-text">Warranty and returns are governed by current American Precision Rifleworks policy. Contact us or see our website for full terms.</div>
+        <div class="receipt-footer">
+          <div>American Precision Rifleworks</div>
+          <div class="receipt-footer-contact">www.AmericanPrecisionRifleworks.com | info@PrecisionRifleworks.us</div>
+        </div>
+      </div>
+    </section>
+
+    <main class="config screen-only">
+      <section class="card summary-card">
+        <div class="section-title">
+          <div class="section-kicker">Pricing & Weight</div>
+        </div>
+        <div class="summary-grid">
+          <div class="summary-item">
+            <div class="summary-label">MSRP Total</div>
+            <div class="summary-value" id="msrpTotal">$0.00</div>
+          </div>
+          <div class="summary-item">
+            <div class="summary-label">Internal Cost Total</div>
+            <div class="summary-value" id="costTotal">$0.00</div>
+          </div>
+          <div class="summary-item">
+            <div class="summary-label">Estimated Rifle Weight</div>
+            <div class="summary-value" id="weightTotal">0.00 lb</div>
+          </div>
+          <div class="summary-input">
+            <label for="laborCharge">Labor</label>
+            <input id="laborCharge" type="number" min="0" step="0.01" placeholder="0.00" inputmode="decimal" />
+          </div>
+          <div class="summary-input">
+            <label for="discountPct">Discount %</label>
+            <input id="discountPct" type="number" min="0" max="100" step="0.1" placeholder="0" inputmode="decimal" />
+          </div>
+          <div class="summary-item">
+            <div class="summary-label">Customer Total (Pre-Tax)</div>
+            <div class="summary-value" id="customerTotal">$0.00</div>
+          </div>
+          <div class="summary-item">
+            <div class="summary-label">Sales Tax (6.5%)</div>
+            <div class="summary-value" id="taxTotal">$0.00</div>
+          </div>
+          <div class="summary-item">
+            <div class="summary-label">Total With Tax</div>
+            <div class="summary-value" id="totalWithTax">$0.00</div>
+          </div>
+        </div>
+        <div class="completeness-card">
+          <div class="completeness-head">
+            <div class="completeness-label">Build Completeness</div>
+            <div class="completeness-pct" id="buildCompletenessPct">0%</div>
+          </div>
+          <div class="completeness-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Build completeness">
+            <div class="completeness-fill" id="buildCompletenessFill"></div>
+          </div>
+          <div class="completeness-meta" id="buildCompletenessMeta">0 / 0 required selections complete</div>
+          <div class="completeness-missing" id="buildCompletenessMissing"></div>
+        </div>
+        <div class="summary-note">Weight is calculated from selected rifle components. Internal cost is never printed. Customer total reflects MSRP minus discount. Total with tax includes 6.5% sales tax.</div>
+      </section>
+
+      <section class="card">
+        <div class="section-title">
+          <div class="section-kicker">Customer</div>
+        </div>
+        <div class="grid">
+          <div>
+            <label for="customerName">Customer Name</label>
+            <input id="customerName" placeholder="e.g., John Smith" autocomplete="name" autocapitalize="words" />
+          </div>
+          <div>
+            <label for="customerEmail">Email</label>
+            <input id="customerEmail" type="email" placeholder="e.g., john@email.com" autocomplete="email" />
+          </div>
+          <div>
+            <label for="customerPhone">Phone</label>
+            <input id="customerPhone" type="tel" placeholder="e.g., 555-555-5555" autocomplete="tel" inputmode="tel" />
+          </div>
+          <div class="twoLine">
+            <label for="customerAddress">Address</label>
+            <input id="customerAddress" placeholder="Street, City, State ZIP" autocomplete="street-address" />
+          </div>
+          <div>
+            <label for="intendedUse">Intended Use</label>
+            <div class="multi-controls">
+              <select id="intendedUse"></select>
+              <button type="button" id="addIntendedBtn">Add</button>
+            </div>
+            <div class="multi-selected" id="intendedSelected"></div>
+          </div>
+          <div>
+            <label for="createdAt">Created</label>
+            <input id="createdAt" type="datetime-local" />
+          </div>
+        </div>
+        <div class="required-legend">Fields marked * are required. Either email or phone is required.</div>
+      </section>
+
+      <section class="card">
+        <div class="section-title">
+          <div class="section-kicker">Action / Chassis / Barrel</div>
+        </div>
+        <div class="grid">
+          <div>
+            <label for="action">Action</label>
+            <select id="action"></select>
+          </div>
+          <div>
+            <label for="actionHand">Action Hand</label>
+            <select id="actionHand"></select>
+          </div>
+          <div>
+            <label for="bottomMetal">Bottom Metal</label>
+            <select id="bottomMetal"></select>
+          </div>
+
+          <div>
+            <label for="trigger">Trigger</label>
+            <select id="trigger"></select>
+          </div>
+          <div>
+            <label for="triggerLb">Trigger Pull (lb)</label>
+            <select id="triggerLb"></select>
+          </div>
+
+          <div>
+            <label for="magPattern">Magazine</label>
+            <select id="magPattern"></select>
+          </div>
+
+          <div class="group-label">Chassis</div>
+          <div>
+            <label for="chassis">Chassis / Stock</label>
+            <select id="chassis"></select>
+          </div>
+
+          <div class="group-label">Barrel Details</div>
+          <div>
+            <label for="cartridge">Cartridge</label>
+            <select id="cartridge"></select>
+          </div>
+          <div>
+            <label for="barrelMaker">Barrel Manufacturer</label>
+            <select id="barrelMaker"></select>
+          </div>
+          <div>
+            <label for="barrelLength">Barrel Length</label>
+            <select id="barrelLength"></select>
+          </div>
+          <div>
+            <label for="barrelContour">Barrel Contour</label>
+            <select id="barrelContour"></select>
+          </div>
+          <div>
+            <label for="twist">Twist Rate</label>
+            <select id="twist"></select>
+          </div>
+          <div>
+            <label for="thread">Muzzle Thread</label>
+            <select id="thread"></select>
+          </div>
+          <div>
+            <label for="muzzleBrake">Muzzle Brake</label>
+            <select id="muzzleBrake"></select>
+          </div>
+        </div>
+        <div class="callout">
+          Core Build Weight: <strong id="coreBuildWeight">0.00 lb</strong>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="section-title">
+          <div class="section-kicker">Optic</div>
+        </div>
+        <div class="grid">
+          <div>
+            <label for="opticNeeded">Optic Needed?</label>
+            <select id="opticNeeded">
+              <option value="Yes">Yes</option>
+              <option value="No">No</option>
+            </select>
+          </div>
+          <div>
+            <label for="optic">Optic</label>
+            <select id="optic"></select>
+          </div>
+
+          <div>
+            <label for="reticleUnit">Reticle Unit</label>
+            <select id="reticleUnit"></select>
+          </div>
+          <div>
+            <label for="railMoa">Base / Rail</label>
+            <select id="railMoa"></select>
+          </div>
+
+          <div>
+            <label for="mountType">Optic Mount</label>
+            <select id="mountType"></select>
+          </div>
+          <div>
+            <label for="ringHeight">Ring / Mount Height</label>
+            <select id="ringHeight"></select>
+          </div>
+        </div>
+        <div class="callout">
+          Optic & Mounting Weight: <strong id="opticMountingWeight">0.00 lb</strong>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="section-title">
+          <div class="section-kicker">Suppressor</div>
+        </div>
+        <div class="grid">
+          <div>
+            <label for="suppressorNeeded">Suppressor Needed?</label>
+            <select id="suppressorNeeded">
+              <option value="No">No</option>
+              <option value="Yes">Yes</option>
+            </select>
+          </div>
+          <div>
+            <label for="suppressorModel">Suppressor Model</label>
+            <select id="suppressorModel"></select>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="section-title">
+          <div class="section-kicker">Accessories</div>
+        </div>
+        <div class="grid">
+          <div class="twoLine">
+            <label for="accessorySelect">Accessories</label>
+            <div class="accessory-controls">
+              <select id="accessorySelect"></select>
+              <button type="button" id="addAccessoryBtn">Add Accessory</button>
+            </div>
+            <div class="accessory-selected" id="accessorySelected"></div>
+          </div>
+        </div>
+        <div class="summary-note">Accessories are optional and included in totals when selected.</div>
+      </section>
+
+      <section class="card">
+        <div class="section-title">
+          <div class="section-kicker">Notes</div>
+        </div>
+        <div class="grid">
+          <div class="twoLine">
+            <label for="notes" class="sr-only">Notes</label>
+            <textarea id="notes" rows="5" placeholder="Suppressor use, ammo preference, accessories, timeline, etc."></textarea>
+          </div>
+        </div>
+      </section>
+
+      <section class="card review-card">
+        <div class="section-title">
+          <div class="section-kicker">Review</div>
+          <h2>Review & Print</h2>
+        </div>
+        <div class="review-grid">
+          <div class="review-block">
+            <div class="review-label">Customer</div>
+            <div class="review-value" id="reviewCustomer"></div>
+            <div class="review-value" id="reviewContact"></div>
+            <div class="review-value" id="reviewAddress"></div>
+          </div>
+          <div class="review-block">
+            <div class="review-label">Build Highlights</div>
+            <div class="review-value" id="reviewBuild"></div>
+            <div class="review-value" id="reviewOptic"></div>
+            <div class="review-value" id="reviewSuppressor"></div>
+            <div class="review-value" id="reviewAccessories"></div>
+          </div>
+          <div class="review-block">
+            <div class="review-label">Pricing</div>
+            <div class="review-value" id="reviewPricing"></div>
+            <div class="review-note">Total price reflects MSRP minus discount. 6.5% sales tax applied.</div>
+          </div>
+        </div>
+        <div class="review-actions">
+          <button class="primary" onclick="printPdf()">Print / Save as PDF</button>
+        </div>
+      </section>
+
+      <section class="card action-card">
+        <div class="actions">
+          <button type="button" class="primary" onclick="saveBuild()">Save Build (.json)</button>
+          <button type="button" onclick="document.getElementById('file').click()">Load Build (.json)</button>
+          <input id="file" type="file" accept="application/json" style="display:none" onchange="loadBuild(event)" />
+          <button type="button" onclick="printPdf()">Print / Save as PDF</button>
+          <button type="button" onclick="resetForm()">Reset</button>
+          <button type="button" id="toggleEditorBtn">Data Editor</button>
+        </div>
+        <div class="editor-status" id="buildStatus" role="status" aria-live="polite"></div>
+        <div class="sub">
+          Offline-friendly: this page autosaves locally as you type. Use "Print / Save as PDF" to generate the build sheet.
+        </div>
+      </section>
+
+      <section class="card editor-card screen-only hidden" id="dataEditor">
+        <div class="section-title">
+          <div class="section-kicker">Data Editor</div>
+          <h2>Options Manager</h2>
+        </div>
+        <div class="editor-mode">
+          <button type="button" id="simpleModeBtn" class="active">Simple Editor</button>
+          <button type="button" id="rawModeBtn">Advanced JSON</button>
+        </div>
+        <div class="editor-toolbar">
+          <div>
+            <label for="editorSection">Dataset</label>
+            <select id="editorSection"></select>
+          </div>
+          <div class="editor-actions">
+            <button type="button" class="primary" id="editorApplyBtn">Save Dataset</button>
+            <button type="button" id="editorPublishBtn">Save to Site</button>
+            <button type="button" id="editorResetBtn">Reset to Defaults</button>
+            <button type="button" id="editorExportBtn">Export JSON</button>
+          </div>
+        </div>
+
+        <div id="simpleEditorPanel">
+          <div class="simple-editor-message" id="simpleEditorMessage"></div>
+          <div class="simple-table-wrap" id="simpleEditorWrap">
+            <table class="simple-table" id="simpleEditorTable">
+              <thead id="simpleEditorHead"></thead>
+              <tbody id="simpleEditorBody"></tbody>
+            </table>
+          </div>
+          <div class="editor-actions simple-actions">
+            <button type="button" id="simpleAddRowBtn">Add Row</button>
+          </div>
+        </div>
+
+        <div id="rawEditorPanel" class="hidden">
+          <div>
+            <label for="editorJson">JSON</label>
+            <textarea id="editorJson" class="editor-textarea" spellcheck="false"></textarea>
+          </div>
+        </div>
+        <div class="editor-status" id="editorStatus" role="status" aria-live="polite"></div>
+        <div class="editor-note">
+          Simple Editor is recommended for non-technical updates. Use Save to Site (when endpoint is configured) or Export JSON as backup.
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- ================================================== -->
+  <!-- Embedded option JSON (fallback if fetch fails).    -->
+  <!-- Sync from assets/options.json via scripts/sync-embedded-options.mjs -->
+  <!-- ================================================== -->
+
+  <script type="application/json" id="options-json">
+  {
+    "intendedUse": [
+      {
+        "name": "PRS / NRL",
+        "id": "prs-nrl"
+      },
+      {
+        "name": "Hunting",
+        "id": "hunting"
+      },
+      {
+        "name": "Long-range target",
+        "id": "long-range-target"
+      },
+      {
+        "name": "Duty / LE",
+        "id": "duty-le"
+      },
+      {
+        "name": "Other",
+        "id": "other"
+      }
+    ],
+    "cartridges": [
+      {
+        "id": "308",
+        "name": ".308 Win",
+        "actionLength": "short"
+      },
+      {
+        "id": "65cm",
+        "name": "6.5 Creedmoor",
+        "actionLength": "short"
+      },
+      {
+        "id": "6cm",
+        "name": "6 Creedmoor",
+        "actionLength": "short"
+      },
+      {
+        "id": "223",
+        "name": ".223 Rem",
+        "actionLength": "short"
+      },
+      {
+        "id": "300prc",
+        "name": ".300 PRC",
+        "actionLength": "long"
+      },
+      {
+        "id": "65prc",
+        "name": "6.5 PRC",
+        "actionLength": "short"
+      },
+      {
+        "id": "300norma",
+        "name": "300 Norma",
+        "actionLength": "long"
+      }
+    ],
+    "actions": [
+      {
+        "name": "Impact Action 737R",
+        "msrp": 1450,
+        "cost": 0,
+        "weight": 2.33,
+        "id": "impact-action-737r",
+        "actionLength": "short"
+      },
+      {
+        "name": "Shop-supplied action (select model)",
+        "msrp": 0,
+        "cost": 0,
+        "weight": 2,
+        "id": "shop-supplied-action-select-model"
+      },
+      {
+        "name": "Defiance (example)",
+        "msrp": 0,
+        "cost": 0,
+        "weight": 2.05,
+        "id": "defiance-example"
+      },
+      {
+        "name": "Impact Precision (example)",
+        "msrp": 1600,
+        "cost": 0,
+        "weight": 1.95,
+        "id": "impact-precision-example",
+        "actionLength": "short"
+      },
+      {
+        "name": "Zermatt (example)",
+        "msrp": 0,
+        "cost": 0,
+        "weight": 2.1,
+        "id": "zermatt-example"
+      }
+    ],
+    "actionHands": [
+      {
+        "name": "Right Hand",
+        "id": "right-hand"
+      },
+      {
+        "name": "Left Hand",
+        "id": "left-hand"
+      }
+    ],
+    "bottomMetals": [
+      {
+        "name": "MDT Hunter",
+        "msrp": 299.99,
+        "cost": 0,
+        "weight": 0.1875,
+        "id": "mdt-hunter"
+      },
+      {
+        "name": "MDT Precision",
+        "msrp": 279.99,
+        "cost": 0,
+        "weight": 0.25,
+        "id": "mdt-precision"
+      },
+      {
+        "name": "DBM (example)",
+        "msrp": 0,
+        "cost": 0,
+        "weight": 0.32,
+        "id": "dbm-example"
+      },
+      {
+        "name": "Other",
+        "msrp": 0,
+        "cost": 0,
+        "weight": 0.3,
+        "id": "other"
+      }
+    ],
+    "barrelMakers": [
+      {
+        "name": "Bartlein",
+        "msrp": 0,
+        "cost": 0,
+        "id": "bartlein"
+      },
+      {
+        "name": "Proof Research Pre-fit Impact Action 737R",
+        "msrp": 999,
+        "cost": 0,
+        "id": "proof-research-pre-fit-impact-action-737r"
+      },
+      {
+        "name": "Krieger",
+        "msrp": 0,
+        "cost": 0,
+        "id": "krieger"
+      },
+      {
+        "name": "Criterion",
+        "msrp": 0,
+        "cost": 0,
+        "id": "criterion"
+      },
+      {
+        "name": "Other",
+        "msrp": 0,
+        "cost": 0,
+        "id": "other"
+      }
+    ],
+    "barrelLengths": [
+      {
+        "name": "18\"",
+        "id": "18"
+      },
+      {
+        "name": "20\"",
+        "id": "20"
+      },
+      {
+        "name": "22\"",
+        "id": "22"
+      },
+      {
+        "name": "24\"",
+        "id": "24"
+      },
+      {
+        "name": "26\"",
+        "id": "26"
+      },
+      {
+        "name": "27\"",
+        "id": "27"
+      },
+      {
+        "name": "28\"",
+        "id": "28"
+      },
+      {
+        "name": "Custom",
+        "id": "custom"
+      }
+    ],
+    "barrelContours": [
+      {
+        "name": "Sendero",
+        "id": "sendero"
+      },
+      {
+        "name": "M24",
+        "id": "m24"
+      },
+      {
+        "name": "M40",
+        "id": "m40"
+      },
+      {
+        "name": "MTU",
+        "id": "mtu"
+      },
+      {
+        "name": "Heavy Palma",
+        "id": "heavy-palma"
+      },
+      {
+        "name": "Light Palma",
+        "id": "light-palma"
+      },
+      {
+        "name": "Custom",
+        "id": "custom"
+      }
+    ],
+    "twists": [
+      {
+        "name": "1:7",
+        "id": "1-7"
+      },
+      {
+        "name": "1:8",
+        "id": "1-8"
+      },
+      {
+        "name": "1:9",
+        "id": "1-9"
+      },
+      {
+        "name": "1:10",
+        "id": "1-10"
+      },
+      {
+        "name": "1:11",
+        "id": "1-11"
+      },
+      {
+        "name": "1:12",
+        "id": "1-12"
+      },
+      {
+        "name": "Recommend",
+        "id": "recommend"
+      }
+    ],
+    "threads": [
+      {
+        "name": "5/8x24",
+        "id": "5-8x24"
+      },
+      {
+        "name": "1/2x28",
+        "id": "1-2x28"
+      },
+      {
+        "name": "Other",
+        "id": "other"
+      }
+    ],
+    "muzzleBrakes": [
+      {
+        "name": "None",
+        "msrp": 0,
+        "cost": 0,
+        "weight": 0,
+        "id": "none"
+      },
+      {
+        "name": "APA Little Bastard",
+        "msrp": 0,
+        "cost": 0,
+        "weight": 0.22,
+        "id": "apa-little-bastard"
+      },
+      {
+        "name": "Area 419 Hellfire",
+        "msrp": 0,
+        "cost": 0,
+        "weight": 0.18,
+        "id": "area-419-hellfire"
+      },
+      {
+        "name": "Area 419 Hellfire Match",
+        "msrp": 0,
+        "cost": 0,
+        "weight": 0.2,
+        "id": "area-419-hellfire-match"
+      },
+      {
+        "name": "Area 419 Sidewinder",
+        "msrp": 0,
+        "cost": 0,
+        "weight": 0.46,
+        "id": "area-419-sidewinder"
+      },
+      {
+        "name": "Area 419 Maverick",
+        "msrp": 0,
+        "cost": 0,
+        "weight": 0.72,
+        "id": "area-419-maverick"
+      },
+      {
+        "name": "Area 419 Universal Adapter",
+        "msrp": 0,
+        "cost": 0,
+        "weight": 0.11,
+        "id": "area-419-universal-adapter"
+      },
+      {
+        "name": "MDT Hunt Brake - Standard",
+        "msrp": 229.99,
+        "cost": 0,
+        "weight": 0.21,
+        "id": "mdt-hunt-brake-standard",
+        "aliases": [
+          "MDT Hunt Brake"
+        ]
+      },
+      {
+        "name": "MDT Hunt Brake - Magnum",
+        "msrp": 229.99,
+        "cost": 0,
+        "weight": 0.21,
+        "id": "mdt-hunt-brake-magnum"
+      }
+    ],
+    "chassis": [
+      {
+        "name": "MDT ACC",
+        "msrp": 1000,
+        "cost": 0,
+        "weight": 4.2,
+        "id": "mdt-acc"
+      },
+      {
+        "name": "MDT HNT26",
+        "msrp": 0,
+        "cost": 0,
+        "weight": 1.63,
+        "id": "mdt-hnt26"
+      },
+      {
+        "name": "Manners TCS",
+        "msrp": 0,
+        "cost": 0,
+        "weight": 3.4,
+        "id": "manners-tcs"
+      },
+      {
+        "name": "KRG (example)",
+        "msrp": 0,
+        "cost": 0,
+        "weight": 3.2,
+        "id": "krg-example"
+      },
+      {
+        "name": "CRBN Rifle Stock - Remington 700 SA - Black",
+        "msrp": 1299.99,
+        "cost": 0,
+        "weight": 1.6875,
+        "id": "crbn-rifle-stock-remington-700-sa-black"
+      }
+    ],
+    "triggers": [
+      {
+        "name": "TriggerTech Diamond - Remington 700 Single-Stage",
+        "msrp": 334.99,
+        "cost": 0,
+        "weight": 0.16,
+        "id": "triggertech-diamond-remington-700-single-stage"
+      },
+      {
+        "name": "TriggerTech Diamond - Remington 700 Two-Stage",
+        "msrp": 364.99,
+        "cost": 0,
+        "weight": 0.17,
+        "id": "triggertech-diamond-remington-700-two-stage"
+      },
+      {
+        "name": "Timney Calvin Elite",
+        "msrp": 0,
+        "cost": 0,
+        "weight": 0.18,
+        "id": "timney-calvin-elite"
+      },
+      {
+        "name": "TriggerTech Remington Model 7 Special Trigger",
+        "msrp": 239.99,
+        "cost": 0,
+        "weight": 0.16,
+        "id": "triggertech-remington-model-7-special-trigger"
+      }
+    ],
+    "triggerLb": [
+      {
+        "name": "N/A",
+        "id": "n-a"
+      },
+      {
+        "name": "1.5",
+        "id": "1-5"
+      },
+      {
+        "name": "2.0",
+        "id": "2-0"
+      },
+      {
+        "name": "2.5",
+        "id": "2-5"
+      },
+      {
+        "name": "3.0",
+        "id": "3-0"
+      },
+      {
+        "name": "3.5",
+        "id": "3-5"
+      },
+      {
+        "name": "4.0",
+        "id": "4-0"
+      },
+      {
+        "name": "Custom",
+        "id": "custom"
+      }
+    ],
+    "magPattern": [
+      {
+        "name": "300WSM / 6.5 PRC MDT Metal AICS Magazine - 7 RND",
+        "msrp": 79.99,
+        "cost": 0,
+        "weight": 0.44,
+        "id": "300wsm-6-5-prc-mdt-metal-aics-magazine-7-rnd"
+      }
+    ],
+    "optics": [
+      {
+        "name": "Nightforce NX6 4-24x50mm - F2",
+        "msrp": 2000,
+        "cost": 0,
+        "weight": 1.70625,
+        "id": "nightforce-nx6-4-24x50mm-f2",
+        "aliases": [
+          "Nightforce NX6"
+        ]
+      },
+      {
+        "name": "Other",
+        "msrp": 0,
+        "cost": 0,
+        "weight": 2.2,
+        "id": "other"
+      }
+    ],
+    "reticleUnit": [
+      {
+        "name": "MOAR",
+        "id": "moar",
+        "aliases": [
+          "MOA"
+        ]
+      },
+      {
+        "name": "4A-i",
+        "id": "4a-i"
+      },
+      {
+        "name": "Doesn't matter",
+        "id": "doesn-t-matter"
+      }
+    ],
+    "railMoa": [
+      {
+        "name": "0 MOA",
+        "id": "0-moa"
+      },
+      {
+        "name": "20 MOA",
+        "id": "20-moa"
+      }
+    ],
+    "mountType": [
+      {
+        "name": "Rings Nightforce 30mm",
+        "msrp": 260,
+        "cost": 0,
+        "weight": 0.53,
+        "id": "rings-nightforce-30mm"
+      },
+      {
+        "name": "Area 419 Tactical Scope Mount",
+        "msrp": 330,
+        "cost": 0,
+        "weight": 1.5,
+        "id": "area-419-tactical-scope-mount"
+      }
+    ],
+    "ringHeight": [
+      {
+        "height": "0.84\" (Rings)",
+        "id": "0-84-rings",
+        "aliases": [
+          "Low"
+        ]
+      },
+      {
+        "height": "0.90\" (Rings)",
+        "id": "0-90-rings",
+        "aliases": [
+          "Medium"
+        ]
+      },
+      {
+        "height": "1.06\" (Rings)",
+        "id": "1-06-rings",
+        "aliases": [
+          "High"
+        ]
+      },
+      {
+        "height": "1.26\" (Rings)",
+        "id": "1-26-rings"
+      },
+      {
+        "height": "1.40\" (Rings)",
+        "id": "1-40-rings"
+      },
+      {
+        "height": "1.54\" (Mount Centerline)",
+        "id": "1-54-mount-centerline"
+      },
+      {
+        "height": "1.70\" (Mount Centerline)",
+        "id": "1-70-mount-centerline"
+      },
+      {
+        "height": "1.93\" (Mount Centerline)",
+        "id": "1-93-mount-centerline"
+      },
+      {
+        "height": "Custom / Recommend",
+        "id": "custom-recommend",
+        "aliases": [
+          "Recommend"
+        ]
+      }
+    ],
+    "suppressors": [
+      {
+        "name": "Thunder Beast Ultra 7",
+        "msrp": 1000,
+        "cost": 0,
+        "id": "thunder-beast-ultra-7"
+      },
+      {
+        "name": "Dead Air Nomad",
+        "msrp": 0,
+        "cost": 0,
+        "id": "dead-air-nomad"
+      },
+      {
+        "name": "SureFire SOCOM",
+        "msrp": 0,
+        "cost": 0,
+        "id": "surefire-socom"
+      },
+      {
+        "name": "Other",
+        "msrp": 0,
+        "cost": 0,
+        "id": "other"
+      }
+    ],
+    "accessories": [
+      {
+        "id": "garmin-x2",
+        "company": "Garmin",
+        "name": "X2",
+        "msrp": 699,
+        "cost": 0
+      },
+      {
+        "id": "shooting-mat",
+        "company": "Creedmoor Sports",
+        "name": "Shooting Mat",
+        "msrp": 0,
+        "cost": 0
+      },
+      {
+        "id": "bipod",
+        "company": "Harris",
+        "name": "Bipod",
+        "msrp": 0,
+        "cost": 0
+      },
+      {
+        "id": "rear-bag",
+        "company": "Armageddon Gear",
+        "name": "Rear Bag",
+        "msrp": 0,
+        "cost": 0
+      },
+      {
+        "id": "tripod",
+        "company": "Really Right Stuff",
+        "name": "Tripod",
+        "msrp": 0,
+        "cost": 0
+      },
+      {
+        "id": "data-card-holder",
+        "company": "Short Action Precision",
+        "name": "Data Card Holder",
+        "msrp": 0,
+        "cost": 0
+      },
+      {
+        "id": "rifle-bag",
+        "company": "TAB Gear",
+        "name": "Rifle Bag",
+        "msrp": 0,
+        "cost": 0
+      }
+    ],
+    "colors": [
+      {
+        "name": "Black",
+        "msrp": 0,
+        "cost": 0,
+        "id": "black"
+      },
+      {
+        "name": "FDE",
+        "msrp": 0,
+        "cost": 0,
+        "id": "fde"
+      },
+      {
+        "name": "ODG",
+        "msrp": 0,
+        "cost": 0,
+        "id": "odg"
+      },
+      {
+        "name": "Gray",
+        "msrp": 0,
+        "cost": 0,
+        "id": "gray"
+      },
+      {
+        "name": "Custom",
+        "msrp": 0,
+        "cost": 0,
+        "id": "custom"
+      }
+    ]
+  }
+  </script>
+
+  <script>
+    // ---- Utilities ----
+    function $(id){ return document.getElementById(id); }
+
+    function parseOptions(){
+      const el = $("options-json");
+      if(!el) return {};
+      try{
+        return JSON.parse(el.textContent);
+      } catch (err){
+        return {};
+      }
+    }
+
+    const ORIGINAL_TITLE = document.title;
+    let pendingPrintTitle = null;
+
+    const OPTIONS_URL = "assets/options.json";
+    const OPTIONS_STORAGE_KEY = "rifle_build_options";
+    const SERVER_SAVE_DEFAULT_ENDPOINT = "/wp-json/apr-configurator/v1/options";
+    const DEFAULT_RING_HEIGHT_OPTIONS = [
+      {height:'0.84" (Rings)'},
+      {height:'0.90" (Rings)'},
+      {height:'1.06" (Rings)'},
+      {height:'1.40" (Rings)'},
+      {height:'1.54" (Mount Centerline)'},
+      {height:'1.70" (Mount Centerline)'},
+      {height:'1.93" (Mount Centerline)'},
+      {height:"Custom / Recommend"}
+    ];
+    const LEGACY_RING_HEIGHT_MAP = {
+      low: '0.84" (Rings)',
+      medium: '0.90" (Rings)',
+      high: '1.06" (Rings)',
+      recommend: "Custom / Recommend"
+    };
+    const DEFAULT_TRIGGER_PULL_OPTIONS = ["N/A", "1.5", "2.0", "2.5", "3.0", "3.5", "4.0", "Custom"];
+    const LEGACY_TRIGGER_PULL_MAP = {
+      "na": "N/A",
+      "n/a": "N/A",
+      "none": "N/A",
+      "not applicable": "N/A"
+    };
+    const OPTION_SECTIONS = [
+      {id:"intendedUse", label:"Intended Use"},
+      {id:"cartridges", label:"Cartridges"},
+      {id:"actions", label:"Actions"},
+      {id:"actionHands", label:"Action Hand"},
+      {id:"bottomMetals", label:"Bottom Metal"},
+      {id:"barrelMakers", label:"Barrel Makers"},
+      {id:"barrelLengths", label:"Barrel Lengths"},
+      {id:"barrelContours", label:"Barrel Contours"},
+      {id:"twists", label:"Twist Rates"},
+      {id:"threads", label:"Threads"},
+      {id:"muzzleBrakes", label:"Muzzle Brakes"},
+      {id:"chassis", label:"Chassis / Stocks"},
+      {id:"triggers", label:"Triggers"},
+      {id:"triggerLb", label:"Trigger Pull (lb)"},
+      {id:"magPattern", label:"Magazine"},
+      {id:"optics", label:"Optics"},
+      {id:"reticleUnit", label:"Reticle Unit"},
+      {id:"railMoa", label:"Base / Rail"},
+      {id:"mountType", label:"Optic Mounts"},
+      {id:"ringHeight", label:"Ring / Mount Height"},
+      {id:"suppressors", label:"Suppressors"},
+      {id:"accessories", label:"Accessories"}
+    ];
+    const SIMPLE_EDITOR_PRESETS = {
+      intendedUse: ["name"],
+      cartridges: ["name","id","actionLength","vendor","sku"],
+      actions: ["name","actionLength","msrp","cost","weight","vendor","sku","id"],
+      actionHands: ["name","vendor","sku","id"],
+      bottomMetals: ["name","msrp","cost","weight","vendor","sku","id"],
+      barrelMakers: ["name","msrp","cost","vendor","sku","id"],
+      barrelLengths: ["name","id"],
+      barrelContours: ["name","id"],
+      twists: ["name","id"],
+      threads: ["name","id"],
+      muzzleBrakes: ["name","msrp","cost","weight","vendor","sku","id"],
+      chassis: ["name","msrp","cost","weight","vendor","sku","id"],
+      triggers: ["name","msrp","cost","weight","vendor","sku","id"],
+      triggerLb: ["name","vendor","sku","id"],
+      magPattern: ["name","msrp","cost","weight","vendor","sku","id"],
+      optics: ["name","msrp","cost","weight","vendor","sku","id"],
+      reticleUnit: ["name","id"],
+      railMoa: ["name","id"],
+      mountType: ["name","msrp","cost","weight","vendor","sku","id"],
+      ringHeight: ["height"],
+      suppressors: ["name","msrp","cost","vendor","sku","id"],
+      accessories: ["company","name","id","msrp","cost","vendor","sku"]
+    };
+    const SIMPLE_EDITOR_DEFAULT_COLUMNS = ["name","msrp","cost","vendor","sku","id"];
+    const SIMPLE_EDITOR_NUMERIC_FIELDS = new Set(["msrp","cost","weight"]);
+    const NON_PRICED_OPTION_SECTIONS = new Set([
+      "intendedUse",
+      "cartridges",
+      "ringHeight",
+      "triggerLb",
+      "barrelLengths",
+      "barrelContours",
+      "twists",
+      "actionHands",
+      "threads",
+      "railMoa",
+      "reticleUnit"
+    ]);
+    const WEIGHT_OPTION_SECTIONS = new Set([
+      "actions",
+      "bottomMetals",
+      "muzzleBrakes",
+      "chassis",
+      "triggers",
+      "magPattern",
+      "optics",
+      "mountType"
+    ]);
+    const SIMPLE_EDITOR_FIELD_BLACKLIST = {
+      intendedUse: new Set(["id","vendor","sku","msrp","cost"]),
+      threads: new Set(["vendor","sku"]),
+      twists: new Set(["vendor","sku"]),
+      railMoa: new Set(["vendor","sku"]),
+      barrelContours: new Set(["vendor","sku"]),
+      barrelLengths: new Set(["vendor","sku"]),
+      reticleUnit: new Set(["vendor","sku"]),
+      ringHeight: new Set(["name","id","vendor","sku"])
+    };
+    const SIMPLE_EDITOR_SELECT_FIELDS = {
+      actionLength: ["", "short", "long"]
+    };
+    const SIMPLE_EDITOR_LABELS = {
+      name: "Name",
+      id: "ID",
+      company: "Company",
+      msrp: "MSRP",
+      cost: "Cost",
+      weight: "Weight (lb)",
+      vendor: "Vendor",
+      sku: "SKU",
+      height: "Height",
+      actionLength: "Action Length"
+    };
+    let DEFAULT_OPTIONS = null;
+    let OPTIONS = null;
+    let editorMode = "simple";
+
+    function setOptionsStatus(text, isError=false){
+      const el = $("optionsStatus");
+      if(!el) return;
+      el.textContent = text;
+      el.className = "badge options-status" + (isError ? " error" : "");
+    }
+
+    function getOptionsUrl(){
+      const joiner = OPTIONS_URL.includes("?") ? "&" : "?";
+      return `${OPTIONS_URL}${joiner}v=${Date.now()}`;
+    }
+
+    async function loadDefaultOptions(){
+      if(DEFAULT_OPTIONS) return DEFAULT_OPTIONS;
+      try{
+        const res = await fetch(getOptionsUrl(), {cache:"no-store"});
+        if(res.ok){
+          const data = await res.json();
+          DEFAULT_OPTIONS = normalizeOptionsSchema(data);
+          setOptionsStatus("Options: assets/options.json");
+          return DEFAULT_OPTIONS;
+        }
+        setOptionsStatus(`Options: assets/options.json (${res.status})`, true);
+      } catch (err){
+        // Fall back to embedded options below.
+        setOptionsStatus("Options: embedded fallback", true);
+      }
+      DEFAULT_OPTIONS = normalizeOptionsSchema(parseOptions());
+      return DEFAULT_OPTIONS;
+    }
+
+    function getDefaultOptions(){
+      return DEFAULT_OPTIONS || normalizeOptionsSchema(parseOptions());
+    }
+
+    function normalizeOptions(opts){
+      if(!opts || typeof opts !== "object" || Array.isArray(opts)) return {};
+      return opts;
+    }
+
+    function normalizeRingHeightValue(value){
+      const raw = (value || "").toString().trim();
+      if(!raw) return "";
+      const mapped = LEGACY_RING_HEIGHT_MAP[raw.toLowerCase()];
+      return mapped || raw;
+    }
+
+    function normalizeRingHeightRows(rows){
+      const list = Array.isArray(rows) ? rows : [];
+      const normalized = list.map(item => {
+        if(typeof item === "string"){
+          const height = normalizeRingHeightValue(item);
+          return height ? {height} : null;
+        }
+        if(!item || typeof item !== "object" || Array.isArray(item)){
+          return null;
+        }
+        const rawHeight = (item.height !== undefined && item.height !== null) ? item.height :
+          ((item.name !== undefined && item.name !== null) ? item.name : item.id);
+        const height = normalizeRingHeightValue(rawHeight);
+        return height ? {height} : null;
+      }).filter(Boolean);
+
+      const unique = [];
+      const seen = new Set();
+      normalized.forEach(item => {
+        const key = item.height.toLowerCase();
+        if(seen.has(key)) return;
+        seen.add(key);
+        unique.push(item);
+      });
+
+      if(unique.length) return unique;
+      return DEFAULT_RING_HEIGHT_OPTIONS.map(item => ({height:item.height}));
+    }
+
+    function normalizeTriggerPullValue(value){
+      const raw = (value || "").toString().trim();
+      if(!raw) return "";
+      const mapped = LEGACY_TRIGGER_PULL_MAP[raw.toLowerCase()];
+      return mapped || raw;
+    }
+
+    function normalizeTriggerPullRows(rows){
+      const list = Array.isArray(rows) ? rows : [];
+      const normalized = list.map(item => {
+        if(typeof item === "string"){
+          const name = normalizeTriggerPullValue(item);
+          return name ? {name} : null;
+        }
+        if(!item || typeof item !== "object" || Array.isArray(item)){
+          return null;
+        }
+        const rawName = (item.name !== undefined && item.name !== null) ? item.name : item.id;
+        const name = normalizeTriggerPullValue(rawName);
+        return name ? {name} : null;
+      }).filter(Boolean);
+
+      const unique = [];
+      const seen = new Set();
+      normalized.forEach(item => {
+        const key = item.name.toLowerCase();
+        if(seen.has(key)) return;
+        seen.add(key);
+        unique.push(item);
+      });
+
+      if(unique.length === 0){
+        return DEFAULT_TRIGGER_PULL_OPTIONS.map(name => ({name}));
+      }
+
+      const naIndex = unique.findIndex(item => item.name.toLowerCase() === "n/a");
+      if(naIndex === -1){
+        unique.unshift({name:"N/A"});
+      } else if(naIndex > 0){
+        const [naItem] = unique.splice(naIndex, 1);
+        unique.unshift(naItem);
+      }
+      return unique;
+    }
+
+    function normalizeAliasList(value){
+      const list = Array.isArray(value)
+        ? value
+        : (typeof value === "string" ? value.split(",") : []);
+      const unique = [];
+      const seen = new Set();
+      list.forEach(item => {
+        const text = (item || "").toString().trim();
+        if(!text) return;
+        const key = text.toLowerCase();
+        if(seen.has(key)) return;
+        seen.add(key);
+        unique.push(text);
+      });
+      return unique;
+    }
+
+    function lookupValue(value){
+      return (value || "")
+        .toString()
+        .trim()
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, " ")
+        .trim();
+    }
+
+    function getOptionDisplayLabel(sectionId, item){
+      if(typeof item === "string"){
+        return item.toString().trim();
+      }
+      if(!item || typeof item !== "object" || Array.isArray(item)){
+        return "";
+      }
+      if(sectionId === "ringHeight"){
+        return ((item.height !== undefined && item.height !== null) ? item.height : item.name || item.id || "").toString().trim();
+      }
+      if(sectionId === "accessories"){
+        const company = (item.company || "").toString().trim();
+        const name = (item.name || "").toString().trim();
+        return `${company} ${name}`.trim() || (item.id || "").toString().trim();
+      }
+      return ((item.name !== undefined && item.name !== null) ? item.name : item.id || "").toString().trim();
+    }
+
+    function buildGeneratedOptionId(sectionId, label, index){
+      const base = safeName(label).toLowerCase();
+      return base || `${sectionId}-${index + 1}`;
+    }
+
+    function normalizeOptionRows(sectionId, rows){
+      if(sectionId === "ringHeight"){
+        const normalized = normalizeRingHeightRows(rows).map(item => {
+          const next = JSON.parse(JSON.stringify(item));
+          next.id = (next.id || buildGeneratedOptionId(sectionId, next.height, 0)).toString().trim();
+          next.aliases = normalizeAliasList(next.aliases);
+          Object.entries(LEGACY_RING_HEIGHT_MAP).forEach(([legacyKey, modernValue]) => {
+            if(modernValue === next.height){
+              next.aliases.push(legacyKey);
+            }
+          });
+          next.aliases = normalizeAliasList(next.aliases);
+          return next;
+        });
+        const seenIds = new Set();
+        normalized.forEach((item, index) => {
+          let candidate = item.id || buildGeneratedOptionId(sectionId, item.height, index);
+          while(seenIds.has(candidate.toLowerCase())){
+            candidate = `${candidate}-${index + 1}`;
+          }
+          item.id = candidate;
+          seenIds.add(candidate.toLowerCase());
+        });
+        return normalized;
+      }
+
+      if(sectionId === "triggerLb"){
+        const normalized = normalizeTriggerPullRows(rows).map(item => {
+          const next = JSON.parse(JSON.stringify(item));
+          next.id = (next.id || buildGeneratedOptionId(sectionId, next.name, 0)).toString().trim();
+          next.aliases = normalizeAliasList(next.aliases);
+          if(next.name.toLowerCase() === "n/a"){
+            next.aliases.push("na", "n/a", "none", "not applicable");
+          }
+          next.aliases = normalizeAliasList(next.aliases);
+          return next;
+        });
+        const seenIds = new Set();
+        normalized.forEach((item, index) => {
+          let candidate = item.id || buildGeneratedOptionId(sectionId, item.name, index);
+          while(seenIds.has(candidate.toLowerCase())){
+            candidate = `${candidate}-${index + 1}`;
+          }
+          item.id = candidate;
+          seenIds.add(candidate.toLowerCase());
+        });
+        return normalized;
+      }
+
+      const list = Array.isArray(rows) ? rows : [];
+      const normalized = [];
+      const seenIds = new Set();
+      list.forEach((item, index) => {
+        let next;
+        if(typeof item === "string"){
+          next = {name:item};
+        } else if(item && typeof item === "object" && !Array.isArray(item)){
+          next = JSON.parse(JSON.stringify(item));
+        } else {
+          return;
+        }
+
+        const label = getOptionDisplayLabel(sectionId, next);
+        if(!label) return;
+
+        const rawId = (next.id || "").toString().trim();
+        let candidate = rawId || buildGeneratedOptionId(sectionId, label, index);
+        while(seenIds.has(candidate.toLowerCase())){
+          candidate = `${candidate}-${index + 1}`;
+        }
+        next.id = candidate;
+        next.aliases = normalizeAliasList(next.aliases);
+        seenIds.add(candidate.toLowerCase());
+        normalized.push(next);
+      });
+      return normalized;
+    }
+
+    function normalizeOptionsSchema(opts){
+      const base = normalizeOptions(opts);
+      const next = {};
+      Object.keys(base).forEach(key => {
+        const value = base[key];
+        if(Array.isArray(value)){
+          next[key] = normalizeOptionRows(key, value);
+          return;
+        }
+        next[key] = JSON.parse(JSON.stringify(value));
+      });
+
+      if(!Array.isArray(next.ringHeight) || next.ringHeight.length === 0){
+        next.ringHeight = normalizeOptionRows("ringHeight", []);
+      }
+      if(!Array.isArray(next.triggerLb) || next.triggerLb.length === 0){
+        next.triggerLb = normalizeOptionRows("triggerLb", []);
+      }
+      return next;
+    }
+
+    function mergeOptions(defaults, stored){
+      const base = normalizeOptionsSchema(defaults);
+      const incoming = normalizeOptionsSchema(stored);
+      const merged = {};
+      const keys = new Set([...Object.keys(base), ...Object.keys(incoming)]);
+      keys.forEach(key => {
+        if(Array.isArray(incoming[key])){
+          merged[key] = incoming[key];
+          return;
+        }
+        if(Array.isArray(base[key])){
+          merged[key] = base[key];
+          return;
+        }
+        if(incoming[key] !== undefined){
+          merged[key] = incoming[key];
+          return;
+        }
+        merged[key] = base[key];
+      });
+      return merged;
+    }
+
+    async function loadOptions(){
+      const defaults = await loadDefaultOptions();
+      const raw = localStorage.getItem(OPTIONS_STORAGE_KEY);
+      if(!raw) return defaults;
+      try{
+        return normalizeOptionsSchema(mergeOptions(defaults, JSON.parse(raw)));
+      } catch (err){
+        return defaults;
+      }
+    }
+
+    function saveOptions(opts){
+      localStorage.setItem(OPTIONS_STORAGE_KEY, JSON.stringify(normalizeOptionsSchema(opts)));
+    }
+
+    function applyOptions(opts, dataOverride){
+      const safe = normalizeOptionsSchema(opts);
+      const current = (dataOverride === undefined) ? getData() : dataOverride;
+
+      setIntendedOptions("intendedUse", Array.isArray(safe.intendedUse) ? safe.intendedUse : []);
+      setOptions("cartridge", Array.isArray(safe.cartridges) ? safe.cartridges : []);
+      setOptions("action", Array.isArray(safe.actions) ? safe.actions : []);
+      setOptions("actionHand", Array.isArray(safe.actionHands) ? safe.actionHands : []);
+      setOptions("bottomMetal", Array.isArray(safe.bottomMetals) ? safe.bottomMetals : []);
+      setOptions("barrelMaker", Array.isArray(safe.barrelMakers) ? safe.barrelMakers : []);
+      setOptions("barrelLength", Array.isArray(safe.barrelLengths) ? safe.barrelLengths : []);
+      setOptions("barrelContour", Array.isArray(safe.barrelContours) ? safe.barrelContours : []);
+      setOptions("twist", Array.isArray(safe.twists) ? safe.twists : []);
+      setOptions("thread", Array.isArray(safe.threads) ? safe.threads : []);
+      setOptions("muzzleBrake", Array.isArray(safe.muzzleBrakes) ? safe.muzzleBrakes : []);
+      setOptions("chassis", Array.isArray(safe.chassis) ? safe.chassis : []);
+      setOptions("trigger", Array.isArray(safe.triggers) ? safe.triggers : []);
+      setOptions("triggerLb", Array.isArray(safe.triggerLb) ? safe.triggerLb : []);
+      setOptions("magPattern", Array.isArray(safe.magPattern) ? safe.magPattern : []);
+      setOptions("optic", Array.isArray(safe.optics) ? safe.optics : []);
+      setOptions("reticleUnit", Array.isArray(safe.reticleUnit) ? safe.reticleUnit : []);
+      setOptions("railMoa", Array.isArray(safe.railMoa) ? safe.railMoa : []);
+      setOptions("mountType", Array.isArray(safe.mountType) ? safe.mountType : []);
+      setOptions("ringHeight", Array.isArray(safe.ringHeight) ? safe.ringHeight : []);
+      setOptions("suppressorModel", Array.isArray(safe.suppressors) ? safe.suppressors : []);
+      setAccessoryOptions("accessorySelect", Array.isArray(safe.accessories) ? safe.accessories : []);
+
+      if(current){
+        setData(current);
+      }
+      updateSummary();
+      buildReceipt();
+      buildReview();
+    }
+
+    function populateEditorSections(){
+      const sel = $("editorSection");
+      if(!sel) return;
+      sel.innerHTML = "";
+      OPTION_SECTIONS.forEach(section => {
+        const opt = document.createElement("option");
+        opt.value = section.id;
+        opt.textContent = section.label;
+        sel.appendChild(opt);
+      });
+      const allOpt = document.createElement("option");
+      allOpt.value = "_all";
+      allOpt.textContent = "All (full JSON, advanced)";
+      sel.appendChild(allOpt);
+      sel.value = OPTION_SECTIONS.length ? OPTION_SECTIONS[0].id : "_all";
+    }
+
+    function setEditorStatus(message, isError){
+      const el = $("editorStatus");
+      if(!el) return;
+      el.textContent = message || "";
+      el.className = "editor-status" + (message ? (isError ? " error" : " ok") : "");
+    }
+
+    function getSimplePresetColumns(sectionId){
+      return SIMPLE_EDITOR_PRESETS[sectionId] || SIMPLE_EDITOR_DEFAULT_COLUMNS;
+    }
+
+    function shouldKeepSimpleField(sectionId, key){
+      const blocked = SIMPLE_EDITOR_FIELD_BLACKLIST[sectionId];
+      if(blocked && blocked.has(key)) return false;
+      if(key === "weight" && !WEIGHT_OPTION_SECTIONS.has(sectionId)) return false;
+      if(NON_PRICED_OPTION_SECTIONS.has(sectionId) && SIMPLE_EDITOR_NUMERIC_FIELDS.has(key)) return false;
+      return true;
+    }
+
+    function editorRowToObject(item){
+      if(typeof item === "string"){
+        return {name:item};
+      }
+      if(!item || typeof item !== "object" || Array.isArray(item)){
+        return {};
+      }
+      return JSON.parse(JSON.stringify(item));
+    }
+
+    function getSimpleSectionRows(sectionId){
+      if(!OPTIONS || !Array.isArray(OPTIONS[sectionId])) return [];
+      return OPTIONS[sectionId].map(item => {
+        const row = editorRowToObject(item);
+        if(sectionId === "ringHeight"){
+          const rawHeight = (row.height !== undefined && row.height !== null) ? row.height : row.name;
+          const textHeight = (rawHeight !== undefined && rawHeight !== null) ? String(rawHeight).trim() : "";
+          return textHeight ? {height:textHeight} : {};
+        }
+        return row;
+      });
+    }
+
+    function getSimpleColumns(sectionId, rows){
+      const preset = [...getSimplePresetColumns(sectionId)];
+      const seen = new Set(preset);
+      rows.forEach(row => {
+        Object.keys(row || {}).forEach(key => {
+          if(!shouldKeepSimpleField(sectionId, key)){
+            return;
+          }
+          if(!seen.has(key)){
+            preset.push(key);
+            seen.add(key);
+          }
+        });
+      });
+      return preset;
+    }
+
+    function readSimpleColumns(){
+      const table = $("simpleEditorTable");
+      if(!table || !table.dataset.columns){
+        return [...SIMPLE_EDITOR_DEFAULT_COLUMNS];
+      }
+      try{
+        const parsed = JSON.parse(table.dataset.columns);
+        return Array.isArray(parsed) && parsed.length ? parsed : [...SIMPLE_EDITOR_DEFAULT_COLUMNS];
+      } catch (err){
+        return [...SIMPLE_EDITOR_DEFAULT_COLUMNS];
+      }
+    }
+
+    function labelForSimpleField(field){
+      return SIMPLE_EDITOR_LABELS[field] || field;
+    }
+
+    function createBlankSimpleRow(columns){
+      const row = {};
+      columns.forEach(key => {
+        row[key] = SIMPLE_EDITOR_NUMERIC_FIELDS.has(key) ? 0 : "";
+      });
+      return row;
+    }
+
+    function buildSimpleEditorRow(columns, source){
+      const tr = document.createElement("tr");
+      columns.forEach(key => {
+        const td = document.createElement("td");
+        let input;
+        if(SIMPLE_EDITOR_SELECT_FIELDS[key]){
+          input = document.createElement("select");
+          SIMPLE_EDITOR_SELECT_FIELDS[key].forEach(value => {
+            const opt = document.createElement("option");
+            opt.value = value;
+            opt.textContent = value ? value : "Select...";
+            input.appendChild(opt);
+          });
+        } else {
+          input = document.createElement("input");
+          input.type = SIMPLE_EDITOR_NUMERIC_FIELDS.has(key) ? "number" : "text";
+          if(SIMPLE_EDITOR_NUMERIC_FIELDS.has(key)){
+            input.min = "0";
+            input.step = "0.01";
+            input.inputMode = "decimal";
+          }
+        }
+        input.dataset.key = key;
+        const value = source && source[key] !== undefined && source[key] !== null ? source[key] : "";
+        input.value = String(value);
+        td.appendChild(input);
+        tr.appendChild(td);
+      });
+
+      const actionTd = document.createElement("td");
+      const removeBtn = document.createElement("button");
+      removeBtn.type = "button";
+      removeBtn.className = "row-remove";
+      removeBtn.textContent = "Remove";
+      removeBtn.addEventListener("click", () => tr.remove());
+      actionTd.appendChild(removeBtn);
+      tr.appendChild(actionTd);
+      return tr;
+    }
+
+    function renderSimpleEditor(){
+      const sel = $("editorSection");
+      const wrap = $("simpleEditorWrap");
+      const table = $("simpleEditorTable");
+      const head = $("simpleEditorHead");
+      const body = $("simpleEditorBody");
+      const message = $("simpleEditorMessage");
+      const addBtn = $("simpleAddRowBtn");
+      if(!sel || !wrap || !table || !head || !body || !message || !addBtn) return;
+
+      const section = sel.value;
+      head.innerHTML = "";
+      body.innerHTML = "";
+
+      if(section === "_all"){
+        wrap.classList.add("hidden");
+        addBtn.disabled = true;
+        message.textContent = "Simple Editor works one dataset at a time. Pick a dataset above, or switch to Advanced JSON.";
+        table.dataset.columns = JSON.stringify([]);
+        return;
+      }
+
+      wrap.classList.remove("hidden");
+      addBtn.disabled = false;
+      message.textContent = "";
+
+      const rows = getSimpleSectionRows(section);
+      const columns = getSimpleColumns(section, rows);
+      table.dataset.columns = JSON.stringify(columns);
+
+      const headRow = document.createElement("tr");
+      columns.forEach(key => {
+        const th = document.createElement("th");
+        th.textContent = labelForSimpleField(key);
+        headRow.appendChild(th);
+      });
+      const actionsTh = document.createElement("th");
+      actionsTh.textContent = "Row";
+      headRow.appendChild(actionsTh);
+      head.appendChild(headRow);
+
+      if(rows.length === 0){
+        rows.push(createBlankSimpleRow(columns));
+      }
+      rows.forEach(row => {
+        body.appendChild(buildSimpleEditorRow(columns, row));
+      });
+    }
+
+    function addSimpleEditorRow(){
+      const body = $("simpleEditorBody");
+      if(!body) return;
+      const columns = readSimpleColumns();
+      body.appendChild(buildSimpleEditorRow(columns, createBlankSimpleRow(columns)));
+    }
+
+    function normalizeSimpleFieldValue(key, raw){
+      const text = (raw === undefined || raw === null) ? "" : String(raw).trim();
+      if(SIMPLE_EDITOR_NUMERIC_FIELDS.has(key)){
+        if(text === "") return 0;
+        const parsed = parseFloat(text);
+        return Number.isFinite(parsed) ? parsed : 0;
+      }
+      if(key === "actionLength"){
+        return normalizeActionLength(text);
+      }
+      return text;
+    }
+
+    function collectSimpleEditorRows(sectionId){
+      const body = $("simpleEditorBody");
+      const columns = readSimpleColumns();
+      if(!body || columns.length === 0) return [];
+      const rows = [];
+      body.querySelectorAll("tr").forEach(tr => {
+        const row = {};
+        let hasContent = false;
+        columns.forEach(key => {
+          if(!shouldKeepSimpleField(sectionId, key)){
+            return;
+          }
+          const field = tr.querySelector(`[data-key="${key}"]`);
+          const value = normalizeSimpleFieldValue(key, field ? field.value : "");
+          if(SIMPLE_EDITOR_NUMERIC_FIELDS.has(key)){
+            row[key] = value;
+            if(value !== 0) hasContent = true;
+            return;
+          }
+          row[key] = value;
+          if(value !== "") hasContent = true;
+        });
+        if(!hasContent) return;
+
+        const cleaned = {};
+        Object.keys(row).forEach(key => {
+          if(!shouldKeepSimpleField(sectionId, key)){
+            return;
+          }
+          if(SIMPLE_EDITOR_NUMERIC_FIELDS.has(key)){
+            cleaned[key] = row[key];
+            return;
+          }
+          if(row[key] !== ""){
+            cleaned[key] = row[key];
+          }
+        });
+
+        if(sectionId === "intendedUse"){
+          const cleanName = (cleaned.name || "").toString().trim();
+          if(cleanName){
+            rows.push({name:cleanName});
+          }
+          return;
+        }
+
+        if(sectionId === "ringHeight"){
+          const cleanHeight = (cleaned.height || "").toString().trim();
+          if(cleanHeight){
+            rows.push({height:cleanHeight});
+          }
+          return;
+        }
+
+        if(Object.keys(cleaned).length){
+          rows.push(cleaned);
+        }
+      });
+      return rows;
+    }
+
+    function validateSimpleEditorRows(sectionId, rows){
+      for(let i = 0; i < rows.length; i++){
+        const row = rows[i];
+        const name = (row.name || "").toString().trim();
+        const height = (row.height || "").toString().trim();
+        const company = (row.company || "").toString().trim();
+        if(sectionId === "accessories"){
+          if(!name && !company){
+            return `Row ${i + 1}: add at least a Name or Company.`;
+          }
+        } else if(sectionId === "ringHeight"){
+          if(!height){
+            return `Row ${i + 1}: Height is required.`;
+          }
+        } else if(!name){
+          return `Row ${i + 1}: Name is required.`;
+        }
+      }
+      return "";
+    }
+
+    function applySimpleEditorChanges(){
+      const sel = $("editorSection");
+      if(!sel) return;
+      const section = sel.value;
+      if(section === "_all"){
+        setEditorStatus("Choose a dataset before using Simple Editor, or switch to Advanced JSON.", true);
+        return;
+      }
+      const rows = collectSimpleEditorRows(section);
+      const validationError = validateSimpleEditorRows(section, rows);
+      if(validationError){
+        setEditorStatus(validationError, true);
+        return;
+      }
+
+      const next = JSON.parse(JSON.stringify(normalizeOptions(OPTIONS) || {}));
+      next[section] = rows;
+
+      OPTIONS = next;
+      saveOptions(OPTIONS);
+      applyOptions(OPTIONS);
+      refreshEditor();
+      setEditorStatus("Dataset updated and saved locally.", false);
+    }
+
+    function applyRawEditorChanges(){
+      const sel = $("editorSection");
+      const area = $("editorJson");
+      if(!sel || !area) return;
+      let parsed;
+      try{
+        parsed = JSON.parse(area.value || "");
+      } catch (err){
+        setEditorStatus("Invalid JSON. Check for trailing commas or missing quotes.", true);
+        return;
+      }
+
+      let next = normalizeOptions(OPTIONS);
+      if(sel.value === "_all"){
+        if(!parsed || typeof parsed !== "object" || Array.isArray(parsed)){
+          setEditorStatus("Full JSON must be an object with arrays (e.g., cartridges, actions, accessories).", true);
+          return;
+        }
+        next = normalizeOptions(parsed);
+      } else {
+        if(!Array.isArray(parsed)){
+          setEditorStatus("Section JSON must be an array.", true);
+          return;
+        }
+        next = JSON.parse(JSON.stringify(next || {}));
+        next[sel.value] = parsed;
+      }
+
+      OPTIONS = next;
+      saveOptions(OPTIONS);
+      applyOptions(OPTIONS);
+      refreshEditor();
+      setEditorStatus("Options updated and saved locally.", false);
+    }
+
+    function setEditorMode(mode){
+      editorMode = (mode === "raw") ? "raw" : "simple";
+      const simplePanel = $("simpleEditorPanel");
+      const rawPanel = $("rawEditorPanel");
+      const simpleBtn = $("simpleModeBtn");
+      const rawBtn = $("rawModeBtn");
+      const applyBtn = $("editorApplyBtn");
+
+      if(simplePanel) simplePanel.classList.toggle("hidden", editorMode !== "simple");
+      if(rawPanel) rawPanel.classList.toggle("hidden", editorMode !== "raw");
+      if(simpleBtn) simpleBtn.classList.toggle("active", editorMode === "simple");
+      if(rawBtn) rawBtn.classList.toggle("active", editorMode === "raw");
+      if(applyBtn){
+        applyBtn.textContent = editorMode === "raw" ? "Apply JSON" : "Save Dataset";
+      }
+
+      refreshEditor();
+    }
+
+    function refreshEditor(){
+      const sel = $("editorSection");
+      const area = $("editorJson");
+      if(!sel || !area) return;
+      const section = sel.value;
+      if(section === "_all"){
+        area.value = JSON.stringify(OPTIONS || {}, null, 2);
+      } else {
+        const data = (OPTIONS && Array.isArray(OPTIONS[section])) ? OPTIONS[section] : [];
+        area.value = JSON.stringify(data, null, 2);
+      }
+      renderSimpleEditor();
+      setEditorStatus("");
+    }
+
+    function applyEditorChanges(){
+      if(editorMode === "raw"){
+        applyRawEditorChanges();
+        return;
+      }
+      applySimpleEditorChanges();
+    }
+
+    function resetOptions(){
+      localStorage.removeItem(OPTIONS_STORAGE_KEY);
+      OPTIONS = getDefaultOptions();
+      applyOptions(OPTIONS);
+      refreshEditor();
+      setEditorStatus("Defaults restored.", false);
+    }
+
+    function exportOptions(){
+      const payload = JSON.stringify(OPTIONS || {}, null, 2);
+      const stamp = new Date().toISOString().slice(0,10);
+      download(`Configurator-Options-${stamp}.json`, payload);
+      setEditorStatus("Exported current options JSON.", false);
+    }
+
+    function isHttpContext(){
+      return window.location.protocol === "http:" || window.location.protocol === "https:";
+    }
+
+    function getServerSaveConfig(){
+      const cfg = (window.CONFIGURATOR_SERVER_SAVE && typeof window.CONFIGURATOR_SERVER_SAVE === "object")
+        ? window.CONFIGURATOR_SERVER_SAVE
+        : {};
+      const endpoint = (cfg.endpoint || SERVER_SAVE_DEFAULT_ENDPOINT).toString().trim();
+      const nonce = (cfg.nonce || "").toString().trim();
+      const authToken = (cfg.authToken || "").toString().trim();
+      return {endpoint, nonce, authToken};
+    }
+
+    function updateServerSaveState(){
+      const btn = $("editorPublishBtn");
+      if(!btn) return;
+      const enabled = isHttpContext();
+      btn.disabled = !enabled;
+      if(!enabled){
+        btn.title = "Save to Site requires HTTP(S) hosting.";
+      } else if(btn.title === "Save to Site requires HTTP(S) hosting."){
+        btn.removeAttribute("title");
+      }
+    }
+
+    async function saveOptionsToServer(){
+      const btn = $("editorPublishBtn");
+      if(!btn) return;
+      if(!isHttpContext()){
+        setEditorStatus("Save to Site requires HTTP(S) hosting.", true);
+        return;
+      }
+
+      const {endpoint, nonce, authToken} = getServerSaveConfig();
+      if(!endpoint){
+        setEditorStatus("Save to Site is not configured. Set CONFIGURATOR_SERVER_SAVE.endpoint.", true);
+        return;
+      }
+
+      const payload = normalizeOptionsSchema(OPTIONS || {});
+      const previousLabel = btn.textContent;
+      btn.disabled = true;
+      btn.textContent = "Saving...";
+      try{
+        const headers = {"Content-Type":"application/json"};
+        if(nonce) headers["X-WP-Nonce"] = nonce;
+        if(authToken) headers["Authorization"] = `Bearer ${authToken}`;
+
+        const res = await fetch(endpoint, {
+          method: "POST",
+          headers,
+          credentials: "same-origin",
+          body: JSON.stringify({options: payload})
+        });
+
+        let detail = "";
+        const contentType = (res.headers.get("content-type") || "").toLowerCase();
+        if(contentType.includes("application/json")){
+          const json = await res.json().catch(() => null);
+          if(json && typeof json === "object"){
+            detail = (json.message || json.error || "").toString().trim();
+          }
+        } else {
+          detail = (await res.text().catch(() => "")).trim();
+        }
+
+        if(!res.ok){
+          const suffix = detail ? ` ${detail}` : "";
+          setEditorStatus(`Save to Site failed (${res.status}).${suffix}`, true);
+          return;
+        }
+
+        if(detail && detail.length <= 120){
+          setEditorStatus(`Saved to site. ${detail}`, false);
+        } else {
+          setEditorStatus("Saved to site successfully.", false);
+        }
+      } catch (err){
+        const message = (err && err.message) ? err.message : "network error";
+        setEditorStatus(`Save to Site failed: ${message}`, true);
+      } finally {
+        btn.textContent = previousLabel;
+        updateServerSaveState();
+      }
+    }
+
+    function toggleEditor(){
+      const panel = $("dataEditor");
+      if(!panel) return;
+      panel.classList.toggle("hidden");
+      if(!panel.classList.contains("hidden")){
+        setEditorMode(editorMode);
+      }
+    }
+
+    const PRINT_PAGE_HEIGHT_IN = 11;
+    const PRINT_MARGIN_IN = 0.5;
+
+    function measureInches(inches){
+      const probe = document.createElement("div");
+      probe.style.height = "1in";
+      probe.style.width = "1in";
+      probe.style.position = "absolute";
+      probe.style.visibility = "hidden";
+      document.body.appendChild(probe);
+      const pxPerIn = probe.getBoundingClientRect().height || 96;
+      probe.remove();
+      return pxPerIn * inches;
+    }
+
+    function setPrintScale(){
+      const receipt = $("receipt");
+      if(!receipt) return;
+      receipt.style.setProperty("--print-scale", "1");
+      const bottom = receipt.querySelector(".receipt-bottom");
+      if(bottom){
+        receipt.style.setProperty("--bottom-reserve", "0px");
+        const bottomHeight = bottom.offsetHeight || 0;
+        receipt.style.setProperty("--bottom-reserve", `${bottomHeight}px`);
+      } else {
+        receipt.style.setProperty("--bottom-reserve", "0px");
+      }
+      const availableHeight = measureInches(PRINT_PAGE_HEIGHT_IN - (PRINT_MARGIN_IN * 2));
+      const contentHeight = receipt.scrollHeight;
+      if(!availableHeight || !contentHeight) return;
+      const safeHeight = Math.max(0, availableHeight - 4);
+      const scale = Math.min(1, safeHeight / contentHeight);
+      receipt.style.setProperty("--print-scale", scale.toFixed(4));
+    }
+
+    function resetPrintScale(){
+      const receipt = $("receipt");
+      if(receipt){
+        receipt.style.removeProperty("--print-scale");
+        receipt.style.removeProperty("--bottom-reserve");
+      }
+    }
+
+    function setPrintTitle(){
+      const ref = buildRef(getData());
+      pendingPrintTitle = ref;
+      document.title = ref || ORIGINAL_TITLE;
+    }
+
+    function restoreTitle(){
+      resetPrintScale();
+      if(!pendingPrintTitle) return;
+      document.title = ORIGINAL_TITLE;
+      pendingPrintTitle = null;
+    }
+
+    function setOptions(selectId, items, placeholder="Select...", includePlaceholder=true){
+      const sel = $(selectId);
+      if(!sel) return;
+      sel.innerHTML = "";
+      if(includePlaceholder && !sel.multiple){
+        const ph = document.createElement("option");
+        ph.value = ""; ph.textContent = placeholder;
+        ph.dataset.msrp = "0";
+        ph.dataset.cost = "0";
+        ph.dataset.weight = "0";
+        sel.appendChild(ph);
+      }
+
+      items.forEach(it => {
+        const opt = document.createElement("option");
+        if(typeof it === "string"){
+          opt.value = it;
+          opt.textContent = it;
+          opt.dataset.aliases = "";
+        } else {
+          const optionId = (it.id !== undefined && it.id !== null) ? it.id :
+            buildGeneratedOptionId(selectId, getOptionDisplayLabel(selectId, it), 0);
+          const optionName = getOptionDisplayLabel(selectId, it) || optionId;
+          opt.value = optionId;
+          opt.textContent = optionName;
+          opt.dataset.msrp = String((it.msrp !== undefined && it.msrp !== null) ? it.msrp : 0);
+          opt.dataset.cost = String((it.cost !== undefined && it.cost !== null) ? it.cost : 0);
+          opt.dataset.weight = String((it.weight !== undefined && it.weight !== null) ? it.weight : 0);
+          opt.dataset.aliases = normalizeAliasList(it.aliases).join("||");
+          if(it.vendor !== undefined && it.vendor !== null) opt.dataset.vendor = String(it.vendor);
+          if(it.sku !== undefined && it.sku !== null) opt.dataset.sku = String(it.sku);
+          if(it.actionLength !== undefined && it.actionLength !== null){
+            opt.dataset.actionLength = String(it.actionLength);
+          }
+        }
+        sel.appendChild(opt);
+      });
+    }
+
+    function splitOptionAliases(value){
+      return (value || "")
+        .toString()
+        .split("||")
+        .map(item => item.trim())
+        .filter(Boolean);
+    }
+
+    function findMatchingOption(selectOrId, rawValue){
+      const sel = (typeof selectOrId === "string") ? $(selectOrId) : selectOrId;
+      if(!sel) return null;
+
+      const rawText = (rawValue || "").toString().trim();
+      if(!rawText) return null;
+
+      const direct = Array.from(sel.options).find(opt => opt.value === rawText);
+      if(direct) return direct;
+
+      const candidateValues = [rawText];
+      if(sel.id === "ringHeight"){
+        candidateValues.push(normalizeRingHeightValue(rawText));
+      }
+      if(sel.id === "triggerLb"){
+        candidateValues.push(normalizeTriggerPullValue(rawText));
+      }
+
+      const normalizedCandidates = Array.from(new Set(candidateValues.map(lookupValue).filter(Boolean)));
+      if(normalizedCandidates.length === 0) return null;
+
+      const options = Array.from(sel.options).filter(opt => (opt.value || "").toString().trim() !== "");
+      const exact = options.find(opt => {
+        const values = [
+          opt.value,
+          opt.textContent,
+          ...splitOptionAliases(opt.dataset.aliases)
+        ];
+        return values.some(value => normalizedCandidates.includes(lookupValue(value)));
+      });
+      if(exact) return exact;
+
+      const fuzzyMatches = options.filter(opt => {
+        const optionValue = lookupValue(opt.textContent || opt.value);
+        return normalizedCandidates.some(candidate =>
+          optionValue && candidate && (optionValue.includes(candidate) || candidate.includes(optionValue))
+        );
+      });
+      return fuzzyMatches.length === 1 ? fuzzyMatches[0] : null;
+    }
+
+    function setResolvedSelectValue(selectId, rawValue){
+      const sel = $(selectId);
+      if(!sel) return {matched:true, value:""};
+
+      const rawText = (rawValue || "").toString().trim();
+      if(!rawText){
+        sel.value = "";
+        return {matched:true, value:""};
+      }
+
+      const match = findMatchingOption(sel, rawText);
+      if(match){
+        sel.value = match.value;
+        return {matched:true, value:match.value, label:(match.textContent || match.value || "").toString().trim()};
+      }
+
+      sel.value = "";
+      return {matched:false, value:"", rawValue:rawText};
+    }
+
+    let INTENDED_MAP = {};
+    let selectedIntended = [];
+
+    function buildIntendedMap(items){
+      INTENDED_MAP = {};
+      items.forEach((it, index) => {
+        if(typeof it === "string"){
+          const id = buildGeneratedOptionId("intendedUse", it, index);
+          INTENDED_MAP[id] = {id, name: it, msrp:0, cost:0};
+          return;
+        }
+        const fallbackId = buildGeneratedOptionId("intendedUse", it.name || it.id || "", index);
+        const id = ((it.id !== undefined && it.id !== null) ? it.id : fallbackId).toString().trim() || fallbackId;
+        const name = (it.name !== undefined && it.name !== null) ? it.name :
+          ((it.id !== undefined && it.id !== null) ? it.id : "Intended Use");
+        INTENDED_MAP[id] = {
+          id,
+          name,
+          msrp: parseFloat(it.msrp || "0") || 0,
+          cost: parseFloat(it.cost || "0") || 0,
+          aliases: normalizeAliasList(it.aliases)
+        };
+      });
+    }
+
+    function findMatchingMapItem(map, rawValue, labelGetter){
+      const rawText = (rawValue || "").toString().trim();
+      if(!rawText) return null;
+      if(map[rawText]) return map[rawText];
+
+      const normalized = lookupValue(rawText);
+      if(!normalized) return null;
+
+      const items = Object.values(map);
+      const exact = items.find(item => {
+        const values = [
+          item.id,
+          item.name,
+          labelGetter ? labelGetter(item) : "",
+          ...(item.aliases || [])
+        ];
+        return values.some(value => lookupValue(value) === normalized);
+      });
+      if(exact) return exact;
+
+      const fuzzyMatches = items.filter(item => {
+        const text = lookupValue(labelGetter ? labelGetter(item) : item.name);
+        return text && (text.includes(normalized) || normalized.includes(text));
+      });
+      return fuzzyMatches.length === 1 ? fuzzyMatches[0] : null;
+    }
+
+    function setIntendedOptions(selectId, items){
+      buildIntendedMap(items || []);
+      const sel = $(selectId);
+      if(!sel) return;
+      sel.innerHTML = "";
+      const ph = document.createElement("option");
+      ph.value = ""; ph.textContent = "Select intended use...";
+      sel.appendChild(ph);
+
+      Object.values(INTENDED_MAP).forEach(item => {
+        const opt = document.createElement("option");
+        opt.value = item.id;
+        opt.textContent = item.name;
+        opt.dataset.msrp = String(item.msrp || 0);
+        opt.dataset.cost = String(item.cost || 0);
+        opt.dataset.aliases = (item.aliases || []).join("||");
+        sel.appendChild(opt);
+      });
+    }
+
+    function normalizeIntendedId(value){
+      if(!value) return null;
+      const match = findMatchingMapItem(INTENDED_MAP, value, item => item.name);
+      return match ? match.id : null;
+    }
+
+    function renderIntendedPills(){
+      const container = $("intendedSelected");
+      if(!container) return;
+      container.innerHTML = "";
+      selectedIntended.forEach(id => {
+        const item = INTENDED_MAP[id];
+        if(!item) return;
+        const pill = document.createElement("div");
+        pill.className = "multi-pill";
+        pill.dataset.id = id;
+
+        const text = document.createElement("span");
+        text.textContent = item.name;
+
+        const remove = document.createElement("button");
+        remove.type = "button";
+        remove.textContent = "×";
+        remove.setAttribute("aria-label", `Remove ${item.name}`);
+        remove.addEventListener("click", () => removeIntended(id));
+
+        pill.appendChild(text);
+        pill.appendChild(remove);
+        container.appendChild(pill);
+      });
+    }
+
+    function addIntended(id){
+      const normalized = normalizeIntendedId(id);
+      if(!normalized || !INTENDED_MAP[normalized]) return;
+      if(selectedIntended.includes(normalized)) return;
+      selectedIntended.push(normalized);
+      renderIntendedPills();
+      autosave();
+    }
+
+    function removeIntended(id){
+      selectedIntended = selectedIntended.filter(item => item !== id);
+      renderIntendedPills();
+      autosave();
+    }
+
+    let ACCESSORY_MAP = {};
+    let selectedAccessories = [];
+
+    function accessoryLabel(item){
+      const company = (item.company || "").trim();
+      const name = (item.name || "").trim();
+      if(company && name) return `${company} — ${name}`;
+      return name || company || "Accessory";
+    }
+
+    function buildAccessoryMap(items){
+      ACCESSORY_MAP = {};
+      items.forEach((it, index) => {
+        if(typeof it === "string"){
+          const id = buildGeneratedOptionId("accessories", it, index);
+          ACCESSORY_MAP[id] = {id, name: it, company:"", msrp:0, cost:0};
+          return;
+        }
+        const rawId = (it.id !== undefined && it.id !== null) ? it.id : null;
+        const fallbackId = buildGeneratedOptionId("accessories", `${it.company || ""}-${it.name || ""}`, index);
+        const id = rawId || fallbackId;
+        const name = (it.name !== undefined && it.name !== null) ? it.name :
+          ((it.id !== undefined && it.id !== null) ? it.id : "Accessory");
+        ACCESSORY_MAP[id] = {
+          id,
+          name,
+          company: (it.company !== undefined && it.company !== null) ? it.company : "",
+          msrp: (it.msrp !== undefined && it.msrp !== null) ? it.msrp : 0,
+          cost: (it.cost !== undefined && it.cost !== null) ? it.cost : 0,
+          aliases: normalizeAliasList(it.aliases)
+        };
+      });
+    }
+
+    function setAccessoryOptions(selectId, items){
+      buildAccessoryMap(items || []);
+      const sel = $(selectId);
+      if(!sel) return;
+      sel.innerHTML = "";
+      const ph = document.createElement("option");
+      ph.value = ""; ph.textContent = "Select accessory...";
+      sel.appendChild(ph);
+
+      Object.values(ACCESSORY_MAP).forEach(item => {
+        const opt = document.createElement("option");
+        opt.value = item.id;
+        opt.textContent = accessoryLabel(item);
+        sel.appendChild(opt);
+      });
+    }
+
+    function normalizeAccessoryId(value){
+      if(!value) return null;
+      const match = findMatchingMapItem(ACCESSORY_MAP, value, item => accessoryLabel(item));
+      return match ? match.id : null;
+    }
+
+    function renderAccessoryPills(){
+      const container = $("accessorySelected");
+      if(!container) return;
+      container.innerHTML = "";
+      selectedAccessories.forEach(id => {
+        const item = ACCESSORY_MAP[id];
+        if(!item) return;
+        const pill = document.createElement("div");
+        pill.className = "accessory-pill";
+        pill.dataset.id = id;
+
+        const text = document.createElement("span");
+        text.textContent = accessoryLabel(item);
+
+        const remove = document.createElement("button");
+        remove.type = "button";
+        remove.textContent = "×";
+        remove.setAttribute("aria-label", `Remove ${accessoryLabel(item)}`);
+        remove.addEventListener("click", () => removeAccessory(id));
+
+        pill.appendChild(text);
+        pill.appendChild(remove);
+        container.appendChild(pill);
+      });
+    }
+
+    function addAccessory(id){
+      const normalized = normalizeAccessoryId(id);
+      if(!normalized || !ACCESSORY_MAP[normalized]) return;
+      if(selectedAccessories.includes(normalized)) return;
+      selectedAccessories.push(normalized);
+      renderAccessoryPills();
+      autosave();
+    }
+
+    function removeAccessory(id){
+      selectedAccessories = selectedAccessories.filter(item => item !== id);
+      renderAccessoryPills();
+      autosave();
+    }
+
+    const FIELD_IDS = [
+      "customerName","customerEmail","customerPhone","customerAddress","createdAt",
+      "cartridge","action","actionHand","bottomMetal","barrelMaker","barrelLength","barrelContour","twist","thread","muzzleBrake",
+      "chassis","trigger","triggerLb","magPattern",
+      "opticNeeded","optic","reticleUnit","railMoa","mountType","ringHeight",
+      "suppressorNeeded","suppressorModel",
+      "laborCharge","discountPct",
+      "notes"
+    ];
+    const OPTIC_PRICE_FIELDS = ["optic","mountType"];
+    const SUPPRESSOR_PRICE_FIELDS = ["suppressorModel"];
+    const PRICE_FIELD_IDS = [
+      "action","bottomMetal","barrelMaker","muzzleBrake",
+      "chassis","trigger","magPattern",
+      "optic","mountType",
+      "suppressorModel"
+    ];
+    const CORE_BUILD_WEIGHT_FIELDS = [
+      "action","bottomMetal","muzzleBrake","chassis","trigger","magPattern"
+    ];
+    const OPTIC_MOUNTING_WEIGHT_FIELDS = [
+      "optic","mountType"
+    ];
+    const SALES_TAX_RATE = 0.065;
+    const REQUIRED_FIELD_DEFS = [
+      {id:"customerName", label:"Customer name"},
+      {id:"cartridge", label:"Cartridge"},
+      {id:"action", label:"Action"},
+      {id:"actionHand", label:"Action hand"},
+      {id:"bottomMetal", label:"Bottom metal"},
+      {id:"barrelMaker", label:"Barrel maker"},
+      {id:"barrelLength", label:"Barrel length"},
+      {id:"barrelContour", label:"Barrel contour"},
+      {id:"twist", label:"Twist rate"},
+      {id:"thread", label:"Muzzle thread"},
+      {id:"chassis", label:"Chassis / stock"},
+      {id:"trigger", label:"Trigger"},
+      {id:"magPattern", label:"Magazine"},
+      {id:"opticNeeded", label:"Optic needed"},
+      {id:"suppressorNeeded", label:"Suppressor needed"}
+    ];
+    const OPTIC_REQUIRED_FIELD_DEFS = [
+      {id:"optic", label:"Optic"},
+      {id:"reticleUnit", label:"Reticle unit"},
+      {id:"railMoa", label:"Base / rail"},
+      {id:"mountType", label:"Optic mount"},
+      {id:"ringHeight", label:"Ring / mount height"}
+    ];
+    const SUPPRESSOR_REQUIRED_FIELD_DEFS = [
+      {id:"suppressorModel", label:"Suppressor model"}
+    ];
+
+    function formatCurrency(amount){
+      return new Intl.NumberFormat("en-US", {style:"currency", currency:"USD"}).format(amount || 0);
+    }
+
+    function formatWeight(weight){
+      const safeWeight = Number(weight) || 0;
+      return `${safeWeight.toFixed(2)} lb`;
+    }
+
+    function toLocalInputValue(date){
+      const tzOffset = date.getTimezoneOffset() * 60000;
+      const local = new Date(date.getTime() - tzOffset);
+      return local.toISOString().slice(0,16);
+    }
+
+    function displayDateTime(value){
+      if(!value) return "N/A";
+      return value.replace("T", " ");
+    }
+
+    function formatPhone(value){
+      const raw = (value || "").toString().trim();
+      if(!raw) return "";
+      const extMatch = raw.match(/\b(?:ext\.?|x|extension|#)\s*(\d+)\b/i);
+      let ext = extMatch ? extMatch[1] : "";
+      let main = extMatch ? raw.slice(0, extMatch.index) : raw;
+      let digits = main.replace(/\D/g, "");
+      if(!digits && !ext) return raw;
+
+      let country = "";
+      if(digits.length > 10){
+        if(digits[0] === "1"){
+          country = "1";
+          digits = digits.slice(1);
+        } else if(!ext){
+          ext = digits.slice(10);
+          digits = digits.slice(0, 10);
+        } else {
+          digits = digits.slice(0, 10);
+        }
+      }
+
+      let formatted = "";
+      if(digits.length <= 3){
+        formatted = digits;
+      } else if(digits.length <= 6){
+        formatted = `(${digits.slice(0,3)}) ${digits.slice(3)}`;
+      } else {
+        formatted = `(${digits.slice(0,3)}) ${digits.slice(3,6)}-${digits.slice(6,10)}`;
+      }
+
+      if(country){
+        formatted = `+${country} ${formatted}`;
+      }
+      if(ext){
+        formatted = `${formatted} x${ext}`;
+      }
+      return formatted.trim();
+    }
+
+    function applyPhoneFormat(){
+      const phone = $("customerPhone");
+      if(!phone) return;
+      const formatted = formatPhone(phone.value);
+      if(formatted && formatted !== phone.value){
+        phone.value = formatted;
+      }
+    }
+
+    function getIntendedSelections(){
+      return [...selectedIntended];
+    }
+
+    function setIntendedSelections(list){
+      const normalized = (list || [])
+        .map(normalizeIntendedId)
+        .filter(Boolean);
+      selectedIntended = Array.from(new Set(normalized));
+      renderIntendedPills();
+    }
+
+    function getIntendedTotals(){
+      let msrp = 0;
+      let cost = 0;
+      selectedIntended.forEach(id => {
+        const item = INTENDED_MAP[id];
+        if(!item) return;
+        msrp += parseFloat(item.msrp || "0") || 0;
+        cost += parseFloat(item.cost || "0") || 0;
+      });
+      return {msrp, cost};
+    }
+
+    function getIntendedLabels(){
+      return selectedIntended
+        .map(id => INTENDED_MAP[id])
+        .filter(Boolean)
+        .map(item => item.name);
+    }
+
+    function getAccessorySelections(){
+      return [...selectedAccessories];
+    }
+
+    function setAccessorySelections(list){
+      const normalized = (list || [])
+        .map(normalizeAccessoryId)
+        .filter(Boolean);
+      selectedAccessories = Array.from(new Set(normalized));
+      renderAccessoryPills();
+    }
+
+    function getAccessoryTotals(){
+      let msrp = 0;
+      let cost = 0;
+      selectedAccessories.forEach(id => {
+        const item = ACCESSORY_MAP[id];
+        if(!item) return;
+        msrp += parseFloat(item.msrp || "0") || 0;
+        cost += parseFloat(item.cost || "0") || 0;
+      });
+      return {msrp, cost};
+    }
+
+    function getAccessoryLabels(){
+      return selectedAccessories
+        .map(id => ACCESSORY_MAP[id])
+        .filter(Boolean)
+        .map(item => accessoryLabel(item));
+    }
+
+    function getSelectedLabel(selectId, fallback){
+      const sel = $(selectId);
+      if(!sel) return valueOrNA(fallback);
+      const opt = sel.options[sel.selectedIndex];
+      if(!opt) return valueOrNA(fallback);
+      const rawValue = (opt.value || "").toString().trim();
+      if(!rawValue) return valueOrNA(fallback);
+      const label = (opt.textContent || rawValue).toString().trim();
+      return label ? label : valueOrNA(fallback);
+    }
+
+    function getFieldDisplayLabel(selectId, fallback){
+      const sel = $(selectId);
+      if(!sel) return valueOrNA(fallback);
+      const selected = sel.options[sel.selectedIndex];
+      if(selected && (selected.value || "").toString().trim()){
+        return getSelectedLabel(selectId, fallback);
+      }
+      const match = findMatchingOption(sel, fallback);
+      if(match){
+        const label = (match.textContent || match.value || "").toString().trim();
+        return label || valueOrNA(fallback);
+      }
+      return valueOrNA(fallback);
+    }
+
+    function normalizeActionLength(value){
+      const v = (value || "").toString().trim().toLowerCase();
+      if(!v) return "";
+      if(v.startsWith("short")) return "short";
+      if(v.startsWith("long")) return "long";
+      return v;
+    }
+
+    function getSelectedOptionData(selectId){
+      const sel = $(selectId);
+      if(!sel) return null;
+      const opt = sel.options[sel.selectedIndex];
+      if(!opt) return null;
+      const value = (opt.value || "").toString().trim();
+      if(!value) return null;
+      return {
+        value,
+        label: (opt.textContent || value).toString().trim(),
+        actionLength: normalizeActionLength(opt.dataset.actionLength)
+      };
+    }
+
+    function buildCompatibilityWarnings(){
+      const warnings = [];
+      const cartridge = getSelectedOptionData("cartridge");
+      const action = getSelectedOptionData("action");
+      if(!cartridge && !action) return warnings;
+
+      const cartLen = cartridge ? cartridge.actionLength : "";
+      const actionLen = action ? action.actionLength : "";
+
+      if(cartridge && action && cartLen && !actionLen){
+        warnings.push(`Action length check unavailable: ${action.label} is missing action-length metadata. Verify fit for the ${cartridge.label} cartridge manually.`);
+      } else if(cartridge && action && !cartLen && actionLen){
+        warnings.push(`Action length check unavailable: ${cartridge.label} is missing cartridge action-length metadata. Verify fit for the selected ${action.label} action manually.`);
+      } else if(cartLen && actionLen && cartLen !== actionLen){
+        warnings.push(`Action length mismatch: ${action.label} is ${actionLen} action, cartridge ${cartridge.label} requires ${cartLen} action.`);
+      }
+
+      return warnings;
+    }
+
+    function getSelectedItems(selectId, label){
+      const sel = $(selectId);
+      if(!sel) return [];
+      const opt = sel.options[sel.selectedIndex];
+      if(!opt) return [];
+      const name = opt.textContent || opt.value;
+      const dataset = opt.dataset || {};
+      const msrp = parseFloat(dataset.msrp || "0") || 0;
+      return [{label, name, msrp}];
+    }
+
+    function buildCostReport(totals){
+      const rowsContainer = $("receiptCostRows");
+      const summary = $("receiptCostSummary");
+      if(!rowsContainer || !summary) return;
+      rowsContainer.innerHTML = "";
+      summary.innerHTML = "";
+      const wrap = rowsContainer.parentElement;
+
+      const items = [];
+      const pushItems = (id, label) => {
+        const selected = getSelectedItems(id, label);
+        selected.forEach(item => items.push(item));
+      };
+
+      selectedIntended.forEach(id => {
+        const item = INTENDED_MAP[id];
+        if(!item) return;
+        items.push({
+          label: "Intended Use",
+          name: item.name,
+          msrp: parseFloat(item.msrp || "0") || 0
+        });
+      });
+      pushItems("action","Action");
+      pushItems("bottomMetal","Bottom Metal");
+      pushItems("barrelMaker","Barrel Maker");
+      pushItems("muzzleBrake","Muzzle Brake");
+      pushItems("chassis","Chassis / Stock");
+      pushItems("trigger","Trigger");
+      pushItems("magPattern","Magazine");
+
+      const opticOn = $("opticNeeded").value !== "No";
+      if(opticOn){
+        pushItems("optic","Optic");
+        pushItems("mountType","Optic Mount");
+      }
+
+      const suppressorOn = $("suppressorNeeded").value !== "No";
+      if(suppressorOn){
+        pushItems("suppressorModel","Suppressor");
+      }
+
+      selectedAccessories.forEach(id => {
+        const item = ACCESSORY_MAP[id];
+        if(!item) return;
+        items.push({
+          label: "Accessory",
+          name: accessoryLabel(item),
+          msrp: parseFloat(item.msrp || "0") || 0
+        });
+      });
+
+      if(totals.laborCharge && totals.laborCharge > 0){
+        items.push({
+          label: "Labor",
+          name: "Labor",
+          msrp: totals.laborCharge
+        });
+      }
+
+      const pricedItems = items.filter(item => item.msrp > 0);
+      if(wrap){
+        wrap.style.display = pricedItems.length ? "block" : "none";
+      }
+      if(pricedItems.length === 0) return;
+
+      pricedItems.forEach(item => {
+        const row = document.createElement("div");
+        row.className = "receipt-cost-row";
+
+        const label = document.createElement("span");
+        const rowLabel = (item.label || "").toString().trim();
+        const rowName = (item.name || "").toString().trim();
+        const sameText = rowLabel && rowName && rowLabel.toLowerCase() === rowName.toLowerCase();
+        if(!rowLabel){
+          label.textContent = rowName;
+        } else if(!rowName || sameText){
+          label.textContent = rowLabel;
+        } else {
+          label.textContent = `${rowLabel}: ${rowName}`;
+        }
+
+        const price = document.createElement("span");
+        price.className = "receipt-cost-num";
+        price.textContent = formatCurrency(item.msrp);
+
+        row.appendChild(label);
+        row.appendChild(price);
+        rowsContainer.appendChild(row);
+      });
+
+      const subtotalSpan = document.createElement("span");
+      const subtotalLabel = totals.laborCharge > 0 ? "Subtotal (incl. Labor):" : "Subtotal MSRP:";
+      subtotalSpan.textContent = `${subtotalLabel} ${formatCurrency(totals.msrp)}`;
+      summary.appendChild(subtotalSpan);
+
+      if(totals.discountPct > 0){
+        const discountSpan = document.createElement("span");
+        discountSpan.textContent = `Discount Applied: ${totals.discountPct.toFixed(1)}%`;
+        summary.appendChild(discountSpan);
+      }
+
+      const totalSpan = document.createElement("span");
+      const discountLabel = totals.discountPct > 0 ? `Total Price (after ${totals.discountPct.toFixed(1)}% discount):` : "Total Price:";
+      totalSpan.innerHTML = `<strong>${discountLabel}</strong> <strong>${formatCurrency(totals.customerTotal)}</strong>`;
+      summary.appendChild(totalSpan);
+
+      const taxSpan = document.createElement("span");
+      taxSpan.textContent = `Sales Tax (6.5%): ${formatCurrency(totals.tax)}`;
+      summary.appendChild(taxSpan);
+
+      const grandSpan = document.createElement("span");
+      grandSpan.innerHTML = `<strong>Total With Tax:</strong> <strong>${formatCurrency(totals.totalWithTax)}</strong>`;
+      summary.appendChild(grandSpan);
+    }
+
+    function setReviewText(id, text){
+      const el = $(id);
+      if(el) el.textContent = text;
+    }
+
+    function setReviewLines(id, lines){
+      const el = $(id);
+      if(!el) return;
+      el.innerHTML = "";
+      const clean = lines.filter(Boolean);
+      if(clean.length === 0){
+        el.textContent = "N/A";
+        return;
+      }
+      clean.forEach(line => {
+        const div = document.createElement("div");
+        div.textContent = line;
+        el.appendChild(div);
+      });
+    }
+
+    function buildReview(){
+      const d = getData();
+      const totals = calcTotals();
+      const intendedText = getIntendedLabels().join(", ") || "N/A";
+
+      setReviewText("reviewCustomer", valueOrNA(d.customerName));
+      const contactParts = [d.customerEmail, formatPhone(d.customerPhone)].filter(Boolean);
+      setReviewText("reviewContact", contactParts.length ? contactParts.join(" | ") : "N/A");
+      setReviewText("reviewAddress", valueOrNA(d.customerAddress));
+
+      const barrelParts = [
+        getFieldDisplayLabel("barrelMaker", d.barrelMaker),
+        getFieldDisplayLabel("barrelLength", d.barrelLength),
+        getFieldDisplayLabel("barrelContour", d.barrelContour)
+      ]
+        .filter(v => v !== "N/A");
+      const barrelText = barrelParts.length ? barrelParts.join(" ") : "N/A";
+      const triggerPullLabel = getFieldDisplayLabel("triggerLb", d.triggerLb);
+      const triggerPullText = triggerPullLabel !== "N/A"
+        ? (triggerPullLabel.toString().trim().toUpperCase() === "N/A" ? " (N/A)" : ` (${triggerPullLabel} lb)`)
+        : "";
+      const buildLines = [
+        `Intended Use: ${intendedText}`,
+        `Cartridge: ${getFieldDisplayLabel("cartridge", d.cartridge)}`,
+        `Action: ${getFieldDisplayLabel("action", d.action)}`,
+        `Action Hand: ${getFieldDisplayLabel("actionHand", d.actionHand)}`,
+        `Bottom Metal: ${getFieldDisplayLabel("bottomMetal", d.bottomMetal)}`,
+        `Barrel: ${barrelText}`,
+        `Chassis: ${getFieldDisplayLabel("chassis", d.chassis)}`,
+        `Muzzle Brake: ${getFieldDisplayLabel("muzzleBrake", d.muzzleBrake)}`,
+        `Trigger: ${getFieldDisplayLabel("trigger", d.trigger)}${triggerPullText}`,
+        `Magazine: ${getFieldDisplayLabel("magPattern", d.magPattern)}`,
+        `Core Build Weight: ${formatWeight(totals.coreBuildWeight)}`
+      ];
+      setReviewLines("reviewBuild", buildLines);
+
+      if(d.opticNeeded === "No"){
+        setReviewText("reviewOptic", `Optic: No | Optic & Mounting Weight: ${formatWeight(totals.opticMountingWeight)}`);
+      } else {
+        setReviewText("reviewOptic", `Optic: ${getFieldDisplayLabel("optic", d.optic)} | Mount: ${getFieldDisplayLabel("mountType", d.mountType)} | Optic & Mounting Weight: ${formatWeight(totals.opticMountingWeight)}`);
+      }
+
+      if(d.suppressorNeeded === "No"){
+        setReviewText("reviewSuppressor", "Suppressor: No");
+      } else {
+        setReviewText("reviewSuppressor", `Suppressor: ${getFieldDisplayLabel("suppressorModel", d.suppressorModel)}`);
+      }
+
+      const accessoryText = getAccessoryLabels().join(", ") || "None";
+      setReviewText("reviewAccessories", `Accessories: ${accessoryText}`);
+
+      const pricingLines = [
+        `MSRP Total: ${formatCurrency(totals.msrp)}`
+      ];
+      if(totals.laborCharge > 0){
+        pricingLines.push(`Labor: ${formatCurrency(totals.laborCharge)}`);
+      }
+      if(totals.discountPct > 0){
+        pricingLines.push(`Discount: ${totals.discountPct.toFixed(1)}%`);
+      }
+      pricingLines.push(`Customer Total (Pre-Tax): ${formatCurrency(totals.customerTotal)}`);
+      pricingLines.push(`Sales Tax (6.5%): ${formatCurrency(totals.tax)}`);
+      pricingLines.push(`Total With Tax: ${formatCurrency(totals.totalWithTax)}`);
+      setReviewLines("reviewPricing", pricingLines);
+    }
+
+    function getSelectedPrice(selectId){
+      const sel = $(selectId);
+      if(!sel) return {msrp:0, cost:0, weight:0};
+      const opt = sel.options[sel.selectedIndex];
+      if(!opt) return {msrp:0, cost:0, weight:0};
+      const dataset = opt.dataset || {};
+      const msrp = parseFloat(dataset.msrp || "0") || 0;
+      const cost = parseFloat(dataset.cost || "0") || 0;
+      const weight = parseFloat(dataset.weight || "0") || 0;
+      return {msrp, cost, weight};
+    }
+
+    function calcTotals(){
+      let msrp = 0;
+      let cost = 0;
+      let coreBuildWeight = 0;
+      let opticMountingWeight = 0;
+      const opticOn = $("opticNeeded").value !== "No";
+      const suppressorOn = $("suppressorNeeded").value !== "No";
+
+      PRICE_FIELD_IDS.forEach(id => {
+        if(!opticOn && OPTIC_PRICE_FIELDS.includes(id)) return;
+        if(!suppressorOn && SUPPRESSOR_PRICE_FIELDS.includes(id)) return;
+        const price = getSelectedPrice(id);
+        msrp += price.msrp;
+        cost += price.cost;
+      });
+
+      CORE_BUILD_WEIGHT_FIELDS.forEach(id => {
+        const selection = getSelectedPrice(id);
+        coreBuildWeight += selection.weight;
+      });
+      if(opticOn){
+        OPTIC_MOUNTING_WEIGHT_FIELDS.forEach(id => {
+          const selection = getSelectedPrice(id);
+          opticMountingWeight += selection.weight;
+        });
+      }
+      const weightTotal = coreBuildWeight + opticMountingWeight;
+
+      const accessoryTotals = getAccessoryTotals();
+      msrp += accessoryTotals.msrp;
+      cost += accessoryTotals.cost;
+
+      const intendedTotals = getIntendedTotals();
+      msrp += intendedTotals.msrp;
+      cost += intendedTotals.cost;
+
+      const laborValue = $("laborCharge") ? $("laborCharge").value : "0";
+      const laborCharge = Math.max(0, parseFloat(laborValue || "0") || 0);
+      msrp += laborCharge;
+      cost += laborCharge;
+
+      const discountInput = $("discountPct");
+      const discountValue = discountInput ? discountInput.value : "0";
+      const discountPct = Math.max(0, Math.min(100, parseFloat(discountValue || "0") || 0));
+      const customerTotal = msrp * (1 - (discountPct / 100));
+      const tax = customerTotal * SALES_TAX_RATE;
+      const totalWithTax = customerTotal + tax;
+
+      return {
+        msrp, cost, weightTotal, coreBuildWeight, opticMountingWeight,
+        discountPct, customerTotal, laborCharge, tax, totalWithTax
+      };
+    }
+
+    function hasFieldValue(id){
+      const el = $(id);
+      if(!el) return false;
+      const value = (el.value || "").toString().trim();
+      return value !== "";
+    }
+
+    function getFieldLabelElement(id){
+      const field = $(id);
+      if(!field) return null;
+      let node = field.parentElement;
+      while(node && node !== document.body){
+        const directLabel = Array.from(node.children || []).find(child => child.tagName === "LABEL");
+        if(directLabel) return directLabel;
+        node = node.parentElement;
+      }
+      return null;
+    }
+
+    function setFieldRequiredIndicator(id, required, titleText=""){
+      const label = getFieldLabelElement(id);
+      if(!label) return;
+      label.classList.toggle("required-indicator", !!required);
+      if(required && titleText){
+        label.title = titleText;
+        return;
+      }
+      if(label.title === "Either email or phone is required."){
+        label.removeAttribute("title");
+      }
+    }
+
+    function updateRequiredIndicators(){
+      REQUIRED_FIELD_DEFS.forEach(def => setFieldRequiredIndicator(def.id, true));
+      setFieldRequiredIndicator("intendedUse", true);
+      setFieldRequiredIndicator("customerEmail", true, "Either email or phone is required.");
+      setFieldRequiredIndicator("customerPhone", true, "Either email or phone is required.");
+
+      const opticOn = !($("opticNeeded") && $("opticNeeded").value === "No");
+      OPTIC_REQUIRED_FIELD_DEFS.forEach(def => setFieldRequiredIndicator(def.id, opticOn));
+
+      const suppressorOn = $("suppressorNeeded") && $("suppressorNeeded").value === "Yes";
+      SUPPRESSOR_REQUIRED_FIELD_DEFS.forEach(def => setFieldRequiredIndicator(def.id, !!suppressorOn));
+    }
+
+    function calcBuildCompleteness(){
+      const checks = [];
+      const addField = (def) => checks.push({label:def.label, filled:hasFieldValue(def.id)});
+      const addCheck = (label, filled) => checks.push({label, filled:!!filled});
+
+      REQUIRED_FIELD_DEFS.forEach(addField);
+      addCheck("Email or phone", hasFieldValue("customerEmail") || hasFieldValue("customerPhone"));
+      addCheck("Intended use", getIntendedSelections().length > 0);
+
+      const opticOn = !($("opticNeeded") && $("opticNeeded").value === "No");
+      if(opticOn){
+        OPTIC_REQUIRED_FIELD_DEFS.forEach(addField);
+      }
+
+      const suppressorOn = $("suppressorNeeded") && $("suppressorNeeded").value === "Yes";
+      if(suppressorOn){
+        SUPPRESSOR_REQUIRED_FIELD_DEFS.forEach(addField);
+      }
+
+      const total = checks.length;
+      const completed = checks.filter(item => item.filled).length;
+      const percent = total ? Math.round((completed / total) * 100) : 0;
+      const missing = checks.filter(item => !item.filled).map(item => item.label);
+      return {percent, completed, total, missing};
+    }
+
+    function updateBuildCompleteness(){
+      const pctEl = $("buildCompletenessPct");
+      const fillEl = $("buildCompletenessFill");
+      const metaEl = $("buildCompletenessMeta");
+      const missingEl = $("buildCompletenessMissing");
+      const trackEl = fillEl ? fillEl.parentElement : null;
+      if(!pctEl || !fillEl || !metaEl || !missingEl) return;
+
+      const result = calcBuildCompleteness();
+      pctEl.textContent = `${result.percent}%`;
+      fillEl.style.width = `${result.percent}%`;
+      fillEl.classList.toggle("ready", result.percent >= 100);
+      if(trackEl){
+        trackEl.setAttribute("aria-valuenow", String(result.percent));
+      }
+      metaEl.textContent = `${result.completed} / ${result.total} required selections complete`;
+
+      if(result.missing.length === 0){
+        missingEl.textContent = "All required selections complete.";
+        return;
+      }
+      const preview = result.missing.slice(0, 3).join(", ");
+      const more = result.missing.length - 3;
+      missingEl.textContent = more > 0 ? `Missing: ${preview} (+${more} more)` : `Missing: ${preview}`;
+    }
+
+    function updateSummary(){
+      const totals = calcTotals();
+      const msrpEl = $("msrpTotal");
+      const costEl = $("costTotal");
+      const weightEl = $("weightTotal");
+      const coreBuildWeightEl = $("coreBuildWeight");
+      const opticMountingWeightEl = $("opticMountingWeight");
+      const customerEl = $("customerTotal");
+      const taxEl = $("taxTotal");
+      const totalWithTaxEl = $("totalWithTax");
+      if(msrpEl) msrpEl.textContent = formatCurrency(totals.msrp);
+      if(costEl) costEl.textContent = formatCurrency(totals.cost);
+      if(weightEl) weightEl.textContent = formatWeight(totals.weightTotal);
+      if(coreBuildWeightEl) coreBuildWeightEl.textContent = formatWeight(totals.coreBuildWeight);
+      if(opticMountingWeightEl) opticMountingWeightEl.textContent = formatWeight(totals.opticMountingWeight);
+      if(customerEl) customerEl.textContent = formatCurrency(totals.customerTotal);
+      if(taxEl) taxEl.textContent = formatCurrency(totals.tax);
+      if(totalWithTaxEl) totalWithTaxEl.textContent = formatCurrency(totals.totalWithTax);
+      updateRequiredIndicators();
+      updateBuildCompleteness();
+    }
+
+    function refreshDerivedUi(){
+      updateSummary();
+      buildReceipt();
+      buildReview();
+    }
+
+    function setBuildStatus(message, isError=false){
+      const el = $("buildStatus");
+      if(!el) return;
+      el.textContent = message || "";
+      el.className = "editor-status" + (message ? (isError ? " error" : " ok") : "");
+    }
+
+    function ensureCreatedAt(){
+      const created = $("createdAt");
+      if(created && !created.value){
+        created.value = toLocalInputValue(new Date());
+      }
+    }
+
+    function getData(){
+      const d = {};
+      FIELD_IDS.forEach(id => d[id] = ($(id) ? $(id).value : ""));
+      d.intendedUse = getIntendedSelections();
+      d.accessories = getAccessorySelections();
+      d.savedAt = new Date().toISOString();
+      return d;
+    }
+
+    function formatUnresolvedSelections(unresolved){
+      return unresolved
+        .map(item => {
+          const label = getFieldLabelElement(item.id);
+          const fieldLabel = label ? label.textContent.trim() : item.id;
+          return `${fieldLabel}: ${item.value}`;
+        })
+        .join("; ");
+    }
+
+    function setData(d){
+      const unresolved = [];
+      FIELD_IDS.forEach(id => {
+        const el = $(id);
+        if(d[id] === undefined || !el) return;
+        if(el.tagName === "SELECT"){
+          const result = setResolvedSelectValue(id, d[id]);
+          if(!result.matched && d[id]){
+            unresolved.push({id, value:d[id]});
+          }
+          return;
+        }
+        el.value = d[id];
+      });
+
+      const intendedSource = Array.isArray(d.intendedUse) ? d.intendedUse : [];
+      const resolvedIntended = intendedSource
+        .map(normalizeIntendedId)
+        .filter(Boolean);
+      setIntendedSelections(resolvedIntended);
+      intendedSource.forEach(value => {
+        if(!normalizeIntendedId(value)){
+          unresolved.push({id:"intendedUse", value});
+        }
+      });
+
+      const accessorySource = Array.isArray(d.accessories) ? d.accessories : [];
+      const resolvedAccessories = accessorySource
+        .map(normalizeAccessoryId)
+        .filter(Boolean);
+      setAccessorySelections(resolvedAccessories);
+      accessorySource.forEach(value => {
+        if(!normalizeAccessoryId(value)){
+          unresolved.push({id:"accessorySelect", value});
+        }
+      });
+
+      applyOpticVisibility({skipAutosave:true});
+      applySuppressorVisibility({skipAutosave:true});
+      applyPhoneFormat();
+      refreshDerivedUi();
+      return {unresolved};
+    }
+
+    function autosave(){
+      localStorage.setItem("rifle_build_autosave", JSON.stringify(getData()));
+      refreshDerivedUi();
+    }
+
+    function download(filename, text, mime="application/json"){
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(new Blob([text], {type:mime}));
+      a.download = filename;
+      a.click();
+      URL.revokeObjectURL(a.href);
+    }
+
+    function safeName(s){
+      return (s || "build").toString().trim().replace(/[^a-z0-9]+/gi, "-").replace(/^-+|-+$/g, "");
+    }
+
+    function valueOrNA(value){
+      if(Array.isArray(value)){
+        const joined = value.filter(Boolean).join(", ").trim();
+        return joined ? joined : "N/A";
+      }
+      const v = ((value !== undefined && value !== null) ? value : "").toString().trim();
+      return v ? v : "N/A";
+    }
+
+    function buildRef(d){
+      const now = new Date();
+      const stamp = String(now.getFullYear()).slice(-2)
+        + String(now.getMonth() + 1).padStart(2, "0")
+        + String(now.getDate()).padStart(2, "0");
+      const nameParts = (d.customerName || "").toString().trim().split(/\s+/).filter(Boolean);
+      const lastName = safeName(nameParts.length ? nameParts[nameParts.length - 1] : "");
+      const cart = safeName(getFieldDisplayLabel("cartridge", d.cartridge));
+      const refLast = (lastName || "CUSTOMER").toUpperCase();
+      const refCart = (cart || "CARTRIDGE").toUpperCase();
+      return `${stamp}-${refLast}-${refCart}`;
+    }
+
+    function buildReceipt(){
+      const d = getData();
+      const totals = calcTotals();
+      const grid = $("receiptGrid");
+      if(!grid) return;
+      grid.innerHTML = "";
+
+      const opticRows = [];
+      if(d.opticNeeded === "No"){
+        opticRows.push({label:"Optic Needed", value:"No"});
+      } else {
+        opticRows.push(
+          {label:"Optic", value:getFieldDisplayLabel("optic", d.optic)},
+          {label:"Reticle Unit", value:getFieldDisplayLabel("reticleUnit", d.reticleUnit)},
+          {label:"Base / Rail", value:getFieldDisplayLabel("railMoa", d.railMoa)},
+          {label:"Optic Mount", value:getFieldDisplayLabel("mountType", d.mountType)},
+          {label:"Ring / Mount Height", value:getFieldDisplayLabel("ringHeight", d.ringHeight)}
+        );
+      }
+      opticRows.push({
+        label:"Optic & Mounting Weight",
+        value:formatWeight(totals.opticMountingWeight),
+        emphasis:"weight-summary"
+      });
+
+      const suppressorRows = [];
+      if(d.suppressorNeeded === "No"){
+        suppressorRows.push({label:"Suppressor Needed", value:"No"});
+      } else {
+        suppressorRows.push({label:"Suppressor", value:getFieldDisplayLabel("suppressorModel", d.suppressorModel)});
+      }
+
+      const accessoriesText = getAccessoryLabels().join(", ") || "None";
+      const noteText = (d.notes || "").toString().trim();
+
+      const sections = [
+        {
+          title:"Customer",
+          rows:[
+            {label:"Customer", value:d.customerName},
+            {label:"Email", value:d.customerEmail},
+            {label:"Phone", value:formatPhone(d.customerPhone)},
+            {label:"Address", value:d.customerAddress},
+            {label:"Intended Use", value:getIntendedLabels()}
+          ]
+        },
+        {
+          title:"Pricing",
+          rows:[]
+        },
+        ...(noteText ? [{
+          title:"Notes",
+          rows:[],
+          noteText
+        }] : []),
+        {
+          title:"Core Build",
+          rows:[
+            {label:"Cartridge", value:getFieldDisplayLabel("cartridge", d.cartridge)},
+            {label:"Action", value:getFieldDisplayLabel("action", d.action)},
+            {label:"Action Hand", value:getFieldDisplayLabel("actionHand", d.actionHand)},
+            {label:"Bottom Metal", value:getFieldDisplayLabel("bottomMetal", d.bottomMetal)},
+            {label:"Barrel Maker", value:getFieldDisplayLabel("barrelMaker", d.barrelMaker)},
+            {label:"Barrel Length", value:getFieldDisplayLabel("barrelLength", d.barrelLength)},
+            {label:"Barrel Contour", value:getFieldDisplayLabel("barrelContour", d.barrelContour)},
+            {label:"Twist Rate", value:getFieldDisplayLabel("twist", d.twist)},
+            {label:"Muzzle Thread", value:getFieldDisplayLabel("thread", d.thread)},
+            {label:"Muzzle Brake", value:getFieldDisplayLabel("muzzleBrake", d.muzzleBrake)},
+            {label:"Chassis / Stock", value:getFieldDisplayLabel("chassis", d.chassis)},
+            {label:"Trigger", value:getFieldDisplayLabel("trigger", d.trigger)},
+            {label:"Trigger Pull (lb)", value:getFieldDisplayLabel("triggerLb", d.triggerLb)},
+            {label:"Magazine", value:getFieldDisplayLabel("magPattern", d.magPattern)},
+            {
+              label:"Core Build Weight",
+              value:formatWeight(totals.coreBuildWeight),
+              emphasis:"weight-summary"
+            }
+          ]
+        },
+        {
+          title:"Optic & Mounting",
+          rows:opticRows
+        },
+        {
+          title:"Suppressor & Accessories",
+          rows:[
+            ...suppressorRows,
+            {label:"Accessories", value:accessoriesText}
+          ]
+        }
+      ];
+
+      sections.forEach(section => {
+        const sectionEl = document.createElement("div");
+        sectionEl.className = "receipt-section";
+
+        const title = document.createElement("h3");
+        title.textContent = section.title;
+        sectionEl.appendChild(title);
+
+        if(section.noteText){
+          const sectionNotes = document.createElement("div");
+          sectionNotes.className = "receipt-notes-text";
+          sectionNotes.textContent = section.noteText;
+          sectionEl.appendChild(sectionNotes);
+        }
+
+        section.rows.forEach(row => {
+          const rowEl = document.createElement("div");
+          rowEl.className = (row && row.emphasis === "weight-summary")
+            ? "receipt-row weight-summary"
+            : "receipt-row";
+
+          const key = document.createElement("span");
+          key.className = "receipt-key";
+          key.textContent = row.label;
+
+          const value = document.createElement("span");
+          value.className = "receipt-value";
+          value.textContent = valueOrNA(row.value);
+
+          rowEl.appendChild(key);
+          rowEl.appendChild(value);
+          sectionEl.appendChild(rowEl);
+        });
+
+        if(section.title === "Pricing"){
+          const costWrap = document.createElement("div");
+          costWrap.className = "receipt-cost";
+          const headRow = document.createElement("div");
+          headRow.className = "receipt-cost-row receipt-cost-head";
+          headRow.innerHTML = "<span>Item</span><span class=\"receipt-cost-num\">Price</span>";
+          const rows = document.createElement("div");
+          rows.id = "receiptCostRows";
+
+          const summary = document.createElement("div");
+          summary.className = "receipt-cost-summary";
+          summary.id = "receiptCostSummary";
+
+          const taxNote = document.createElement("div");
+          taxNote.className = "summary-note";
+          taxNote.textContent = "Total includes 6.5% sales tax.";
+
+          costWrap.appendChild(headRow);
+          costWrap.appendChild(rows);
+          costWrap.appendChild(summary);
+          costWrap.appendChild(taxNote);
+          sectionEl.appendChild(costWrap);
+        }
+
+        grid.appendChild(sectionEl);
+      });
+
+      buildCostReport(totals);
+
+      const notesWrap = $("receiptNotesWrap");
+      const notesEl = $("receiptNotes");
+      if(notesEl) notesEl.textContent = "";
+      if(notesWrap) notesWrap.style.display = "none";
+
+      const warningsWrap = $("receiptWarnings");
+      const warningsText = $("receiptWarningsText");
+      if(warningsWrap && warningsText){
+        const warnings = buildCompatibilityWarnings();
+        warningsText.innerHTML = "";
+        if(warnings.length){
+          warnings.forEach(line => {
+            const div = document.createElement("div");
+            div.textContent = line;
+            warningsText.appendChild(div);
+          });
+          warningsWrap.style.display = "block";
+        } else {
+          warningsWrap.style.display = "none";
+        }
+      }
+
+      const metaParts = [
+        `Created: ${displayDateTime(d.createdAt)}`
+      ];
+      const metaEl = $("receiptMeta");
+      if(metaEl) metaEl.textContent = metaParts.join(" | ");
+
+      const idEl = $("receiptId");
+      if(idEl) idEl.textContent = buildRef(d);
+    }
+
+    // ---- Save/Load ----
+    function saveBuild(){
+      const d = getData();
+      const ref = buildRef(d);
+      download(`${ref}.json`, JSON.stringify(d, null, 2));
+      setBuildStatus(`Build exported as ${ref}.json.`, false);
+    }
+
+    async function loadBuild(e){
+      const file = e && e.target && e.target.files ? e.target.files[0] : null;
+      if(!file) return;
+      try{
+        const txt = await file.text();
+        const parsed = JSON.parse(txt);
+        const result = setData(parsed);
+        autosave();
+        if(result && result.unresolved && result.unresolved.length){
+          setBuildStatus(`Build loaded with ${result.unresolved.length} unresolved selection(s): ${formatUnresolvedSelections(result.unresolved)}`, true);
+        } else {
+          setBuildStatus(`Build loaded from ${file.name}.`, false);
+        }
+      } catch (err){
+        const message = (err && err.message) ? err.message : "invalid JSON";
+        setBuildStatus(`Load failed for ${file.name}: ${message}`, true);
+      } finally {
+        e.target.value = "";
+      }
+    }
+
+    function resetForm(){
+      localStorage.removeItem("rifle_build_autosave");
+      setBuildStatus("");
+      location.reload();
+    }
+
+    // ---- Optic conditional behavior ----
+    function applyOpticVisibility(options={}){
+      const {skipAutosave=false} = options;
+      const on = $("opticNeeded").value !== "No";
+      ["optic","reticleUnit","railMoa","mountType","ringHeight"].forEach(id => {
+        $(id).disabled = !on;
+        if(!on) $(id).value = "";
+      });
+      if(skipAutosave) return;
+      autosave();
+    }
+
+    function applySuppressorVisibility(options={}){
+      const {skipAutosave=false} = options;
+      const on = $("suppressorNeeded").value !== "No";
+      ["suppressorModel"].forEach(id => {
+        $(id).disabled = !on;
+        if(!on) $(id).value = "";
+      });
+      if(skipAutosave) return;
+      autosave();
+    }
+
+    // ---- Print/PDF ----
+    function printPdf(){
+      buildReceipt();
+      setPrintTitle();
+      setPrintScale();
+      window.print();
+      restoreTitle();
+    }
+
+    // ---- Init ----
+    async function init(){
+      let savedData = null;
+      const saved = localStorage.getItem("rifle_build_autosave");
+      if(saved){
+        try{
+          savedData = JSON.parse(saved);
+        } catch (err){
+          savedData = null;
+        }
+      }
+
+      OPTIONS = await loadOptions();
+      populateEditorSections();
+      applyOptions(OPTIONS, null);
+
+      if(savedData){
+        const restored = setData(savedData);
+        if(restored && restored.unresolved && restored.unresolved.length){
+          setBuildStatus(`Autosave restored with ${restored.unresolved.length} unresolved selection(s): ${formatUnresolvedSelections(restored.unresolved)}`, true);
+        }
+      }
+      ensureCreatedAt();
+
+      // Autosave on changes
+      FIELD_IDS.forEach(id => {
+        $(id).addEventListener("input", autosave);
+        $(id).addEventListener("change", autosave);
+      });
+      const phoneInput = $("customerPhone");
+      if(phoneInput){
+        const formatAndSave = () => {
+          const formatted = formatPhone(phoneInput.value);
+          if(formatted && formatted !== phoneInput.value){
+            phoneInput.value = formatted;
+            autosave();
+          }
+        };
+        phoneInput.addEventListener("blur", formatAndSave);
+        phoneInput.addEventListener("change", formatAndSave);
+      }
+      $("opticNeeded").addEventListener("change", applyOpticVisibility);
+      $("suppressorNeeded").addEventListener("change", applySuppressorVisibility);
+      $("addIntendedBtn").addEventListener("click", () => {
+        const sel = $("intendedUse");
+        if(!sel) return;
+        addIntended(sel.value);
+        sel.value = "";
+      });
+      $("addAccessoryBtn").addEventListener("click", () => {
+        const sel = $("accessorySelect");
+        if(!sel) return;
+        addAccessory(sel.value);
+        sel.value = "";
+      });
+      window.addEventListener("beforeprint", () => {
+        buildReceipt();
+        setPrintTitle();
+        setPrintScale();
+      });
+      window.addEventListener("afterprint", restoreTitle);
+      $("toggleEditorBtn").addEventListener("click", toggleEditor);
+      $("editorSection").addEventListener("change", refreshEditor);
+      $("editorApplyBtn").addEventListener("click", applyEditorChanges);
+      $("editorPublishBtn").addEventListener("click", saveOptionsToServer);
+      $("editorResetBtn").addEventListener("click", resetOptions);
+      $("editorExportBtn").addEventListener("click", exportOptions);
+      $("simpleModeBtn").addEventListener("click", () => setEditorMode("simple"));
+      $("rawModeBtn").addEventListener("click", () => setEditorMode("raw"));
+      $("simpleAddRowBtn").addEventListener("click", addSimpleEditorRow);
+
+      updateServerSaveState();
+      setEditorMode("simple");
+      applyOpticVisibility();
+      applySuppressorVisibility();
+      updateSummary();
+      buildReceipt();
+      buildReview();
+    }
+
+    init().catch(err => {
+      console.error("Init failed", err);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,679 @@
+{
+  "intendedUse": [
+    {
+      "name": "PRS / NRL",
+      "id": "prs-nrl"
+    },
+    {
+      "name": "Hunting",
+      "id": "hunting"
+    },
+    {
+      "name": "Long-range target",
+      "id": "long-range-target"
+    },
+    {
+      "name": "Duty / LE",
+      "id": "duty-le"
+    },
+    {
+      "name": "Other",
+      "id": "other"
+    }
+  ],
+  "cartridges": [
+    {
+      "id": "308",
+      "name": ".308 Win",
+      "actionLength": "short"
+    },
+    {
+      "id": "65cm",
+      "name": "6.5 Creedmoor",
+      "actionLength": "short"
+    },
+    {
+      "id": "6cm",
+      "name": "6 Creedmoor",
+      "actionLength": "short"
+    },
+    {
+      "id": "223",
+      "name": ".223 Rem",
+      "actionLength": "short"
+    },
+    {
+      "id": "300prc",
+      "name": ".300 PRC",
+      "actionLength": "long"
+    },
+    {
+      "id": "65prc",
+      "name": "6.5 PRC",
+      "actionLength": "short"
+    },
+    {
+      "id": "300norma",
+      "name": "300 Norma",
+      "actionLength": "long"
+    }
+  ],
+  "actions": [
+    {
+      "name": "Impact Action 737R",
+      "msrp": 1450,
+      "cost": 0,
+      "weight": 2.33,
+      "id": "impact-action-737r",
+      "actionLength": "short"
+    },
+    {
+      "name": "Shop-supplied action (select model)",
+      "msrp": 0,
+      "cost": 0,
+      "weight": 2,
+      "id": "shop-supplied-action-select-model"
+    },
+    {
+      "name": "Defiance (example)",
+      "msrp": 0,
+      "cost": 0,
+      "weight": 2.05,
+      "id": "defiance-example"
+    },
+    {
+      "name": "Impact Precision (example)",
+      "msrp": 1600,
+      "cost": 0,
+      "weight": 1.95,
+      "id": "impact-precision-example",
+      "actionLength": "short"
+    },
+    {
+      "name": "Zermatt (example)",
+      "msrp": 0,
+      "cost": 0,
+      "weight": 2.1,
+      "id": "zermatt-example"
+    }
+  ],
+  "actionHands": [
+    {
+      "name": "Right Hand",
+      "id": "right-hand"
+    },
+    {
+      "name": "Left Hand",
+      "id": "left-hand"
+    }
+  ],
+  "bottomMetals": [
+    {
+      "name": "MDT Hunter",
+      "msrp": 299.99,
+      "cost": 0,
+      "weight": 0.1875,
+      "id": "mdt-hunter"
+    },
+    {
+      "name": "MDT Precision",
+      "msrp": 279.99,
+      "cost": 0,
+      "weight": 0.25,
+      "id": "mdt-precision"
+    },
+    {
+      "name": "DBM (example)",
+      "msrp": 0,
+      "cost": 0,
+      "weight": 0.32,
+      "id": "dbm-example"
+    },
+    {
+      "name": "Other",
+      "msrp": 0,
+      "cost": 0,
+      "weight": 0.3,
+      "id": "other"
+    }
+  ],
+  "barrelMakers": [
+    {
+      "name": "Bartlein",
+      "msrp": 0,
+      "cost": 0,
+      "id": "bartlein"
+    },
+    {
+      "name": "Proof Research Pre-fit Impact Action 737R",
+      "msrp": 999,
+      "cost": 0,
+      "id": "proof-research-pre-fit-impact-action-737r"
+    },
+    {
+      "name": "Krieger",
+      "msrp": 0,
+      "cost": 0,
+      "id": "krieger"
+    },
+    {
+      "name": "Criterion",
+      "msrp": 0,
+      "cost": 0,
+      "id": "criterion"
+    },
+    {
+      "name": "Other",
+      "msrp": 0,
+      "cost": 0,
+      "id": "other"
+    }
+  ],
+  "barrelLengths": [
+    {
+      "name": "18\"",
+      "id": "18"
+    },
+    {
+      "name": "20\"",
+      "id": "20"
+    },
+    {
+      "name": "22\"",
+      "id": "22"
+    },
+    {
+      "name": "24\"",
+      "id": "24"
+    },
+    {
+      "name": "26\"",
+      "id": "26"
+    },
+    {
+      "name": "27\"",
+      "id": "27"
+    },
+    {
+      "name": "28\"",
+      "id": "28"
+    },
+    {
+      "name": "Custom",
+      "id": "custom"
+    }
+  ],
+  "barrelContours": [
+    {
+      "name": "Sendero",
+      "id": "sendero"
+    },
+    {
+      "name": "M24",
+      "id": "m24"
+    },
+    {
+      "name": "M40",
+      "id": "m40"
+    },
+    {
+      "name": "MTU",
+      "id": "mtu"
+    },
+    {
+      "name": "Heavy Palma",
+      "id": "heavy-palma"
+    },
+    {
+      "name": "Light Palma",
+      "id": "light-palma"
+    },
+    {
+      "name": "Custom",
+      "id": "custom"
+    }
+  ],
+  "twists": [
+    {
+      "name": "1:7",
+      "id": "1-7"
+    },
+    {
+      "name": "1:8",
+      "id": "1-8"
+    },
+    {
+      "name": "1:9",
+      "id": "1-9"
+    },
+    {
+      "name": "1:10",
+      "id": "1-10"
+    },
+    {
+      "name": "1:11",
+      "id": "1-11"
+    },
+    {
+      "name": "1:12",
+      "id": "1-12"
+    },
+    {
+      "name": "Recommend",
+      "id": "recommend"
+    }
+  ],
+  "threads": [
+    {
+      "name": "5/8x24",
+      "id": "5-8x24"
+    },
+    {
+      "name": "1/2x28",
+      "id": "1-2x28"
+    },
+    {
+      "name": "Other",
+      "id": "other"
+    }
+  ],
+  "muzzleBrakes": [
+    {
+      "name": "None",
+      "msrp": 0,
+      "cost": 0,
+      "weight": 0,
+      "id": "none"
+    },
+    {
+      "name": "APA Little Bastard",
+      "msrp": 0,
+      "cost": 0,
+      "weight": 0.22,
+      "id": "apa-little-bastard"
+    },
+    {
+      "name": "Area 419 Hellfire",
+      "msrp": 0,
+      "cost": 0,
+      "weight": 0.18,
+      "id": "area-419-hellfire"
+    },
+    {
+      "name": "Area 419 Hellfire Match",
+      "msrp": 0,
+      "cost": 0,
+      "weight": 0.2,
+      "id": "area-419-hellfire-match"
+    },
+    {
+      "name": "Area 419 Sidewinder",
+      "msrp": 0,
+      "cost": 0,
+      "weight": 0.46,
+      "id": "area-419-sidewinder"
+    },
+    {
+      "name": "Area 419 Maverick",
+      "msrp": 0,
+      "cost": 0,
+      "weight": 0.72,
+      "id": "area-419-maverick"
+    },
+    {
+      "name": "Area 419 Universal Adapter",
+      "msrp": 0,
+      "cost": 0,
+      "weight": 0.11,
+      "id": "area-419-universal-adapter"
+    },
+    {
+      "name": "MDT Hunt Brake - Standard",
+      "msrp": 229.99,
+      "cost": 0,
+      "weight": 0.21,
+      "id": "mdt-hunt-brake-standard",
+      "aliases": [
+        "MDT Hunt Brake"
+      ]
+    },
+    {
+      "name": "MDT Hunt Brake - Magnum",
+      "msrp": 229.99,
+      "cost": 0,
+      "weight": 0.21,
+      "id": "mdt-hunt-brake-magnum"
+    }
+  ],
+  "chassis": [
+    {
+      "name": "MDT ACC",
+      "msrp": 1000,
+      "cost": 0,
+      "weight": 4.2,
+      "id": "mdt-acc"
+    },
+    {
+      "name": "MDT HNT26",
+      "msrp": 0,
+      "cost": 0,
+      "weight": 1.63,
+      "id": "mdt-hnt26"
+    },
+    {
+      "name": "Manners TCS",
+      "msrp": 0,
+      "cost": 0,
+      "weight": 3.4,
+      "id": "manners-tcs"
+    },
+    {
+      "name": "KRG (example)",
+      "msrp": 0,
+      "cost": 0,
+      "weight": 3.2,
+      "id": "krg-example"
+    },
+    {
+      "name": "CRBN Rifle Stock - Remington 700 SA - Black",
+      "msrp": 1299.99,
+      "cost": 0,
+      "weight": 1.6875,
+      "id": "crbn-rifle-stock-remington-700-sa-black"
+    }
+  ],
+  "triggers": [
+    {
+      "name": "TriggerTech Diamond - Remington 700 Single-Stage",
+      "msrp": 334.99,
+      "cost": 0,
+      "weight": 0.16,
+      "id": "triggertech-diamond-remington-700-single-stage"
+    },
+    {
+      "name": "TriggerTech Diamond - Remington 700 Two-Stage",
+      "msrp": 364.99,
+      "cost": 0,
+      "weight": 0.17,
+      "id": "triggertech-diamond-remington-700-two-stage"
+    },
+    {
+      "name": "Timney Calvin Elite",
+      "msrp": 0,
+      "cost": 0,
+      "weight": 0.18,
+      "id": "timney-calvin-elite"
+    },
+    {
+      "name": "TriggerTech Remington Model 7 Special Trigger",
+      "msrp": 239.99,
+      "cost": 0,
+      "weight": 0.16,
+      "id": "triggertech-remington-model-7-special-trigger"
+    }
+  ],
+  "triggerLb": [
+    {
+      "name": "N/A",
+      "id": "n-a"
+    },
+    {
+      "name": "1.5",
+      "id": "1-5"
+    },
+    {
+      "name": "2.0",
+      "id": "2-0"
+    },
+    {
+      "name": "2.5",
+      "id": "2-5"
+    },
+    {
+      "name": "3.0",
+      "id": "3-0"
+    },
+    {
+      "name": "3.5",
+      "id": "3-5"
+    },
+    {
+      "name": "4.0",
+      "id": "4-0"
+    },
+    {
+      "name": "Custom",
+      "id": "custom"
+    }
+  ],
+  "magPattern": [
+    {
+      "name": "300WSM / 6.5 PRC MDT Metal AICS Magazine - 7 RND",
+      "msrp": 79.99,
+      "cost": 0,
+      "weight": 0.44,
+      "id": "300wsm-6-5-prc-mdt-metal-aics-magazine-7-rnd"
+    }
+  ],
+  "optics": [
+    {
+      "name": "Nightforce NX6 4-24x50mm - F2",
+      "msrp": 2000,
+      "cost": 0,
+      "weight": 1.70625,
+      "id": "nightforce-nx6-4-24x50mm-f2",
+      "aliases": [
+        "Nightforce NX6"
+      ]
+    },
+    {
+      "name": "Other",
+      "msrp": 0,
+      "cost": 0,
+      "weight": 2.2,
+      "id": "other"
+    }
+  ],
+  "reticleUnit": [
+    {
+      "name": "MOAR",
+      "id": "moar",
+      "aliases": [
+        "MOA"
+      ]
+    },
+    {
+      "name": "4A-i",
+      "id": "4a-i"
+    },
+    {
+      "name": "Doesn't matter",
+      "id": "doesn-t-matter"
+    }
+  ],
+  "railMoa": [
+    {
+      "name": "0 MOA",
+      "id": "0-moa"
+    },
+    {
+      "name": "20 MOA",
+      "id": "20-moa"
+    }
+  ],
+  "mountType": [
+    {
+      "name": "Rings Nightforce 30mm",
+      "msrp": 260,
+      "cost": 0,
+      "weight": 0.53,
+      "id": "rings-nightforce-30mm"
+    },
+    {
+      "name": "Area 419 Tactical Scope Mount",
+      "msrp": 330,
+      "cost": 0,
+      "weight": 1.5,
+      "id": "area-419-tactical-scope-mount"
+    }
+  ],
+  "ringHeight": [
+    {
+      "height": "0.84\" (Rings)",
+      "id": "0-84-rings",
+      "aliases": [
+        "Low"
+      ]
+    },
+    {
+      "height": "0.90\" (Rings)",
+      "id": "0-90-rings",
+      "aliases": [
+        "Medium"
+      ]
+    },
+    {
+      "height": "1.06\" (Rings)",
+      "id": "1-06-rings",
+      "aliases": [
+        "High"
+      ]
+    },
+    {
+      "height": "1.26\" (Rings)",
+      "id": "1-26-rings"
+    },
+    {
+      "height": "1.40\" (Rings)",
+      "id": "1-40-rings"
+    },
+    {
+      "height": "1.54\" (Mount Centerline)",
+      "id": "1-54-mount-centerline"
+    },
+    {
+      "height": "1.70\" (Mount Centerline)",
+      "id": "1-70-mount-centerline"
+    },
+    {
+      "height": "1.93\" (Mount Centerline)",
+      "id": "1-93-mount-centerline"
+    },
+    {
+      "height": "Custom / Recommend",
+      "id": "custom-recommend",
+      "aliases": [
+        "Recommend"
+      ]
+    }
+  ],
+  "suppressors": [
+    {
+      "name": "Thunder Beast Ultra 7",
+      "msrp": 1000,
+      "cost": 0,
+      "id": "thunder-beast-ultra-7"
+    },
+    {
+      "name": "Dead Air Nomad",
+      "msrp": 0,
+      "cost": 0,
+      "id": "dead-air-nomad"
+    },
+    {
+      "name": "SureFire SOCOM",
+      "msrp": 0,
+      "cost": 0,
+      "id": "surefire-socom"
+    },
+    {
+      "name": "Other",
+      "msrp": 0,
+      "cost": 0,
+      "id": "other"
+    }
+  ],
+  "accessories": [
+    {
+      "id": "garmin-x2",
+      "company": "Garmin",
+      "name": "X2",
+      "msrp": 699,
+      "cost": 0
+    },
+    {
+      "id": "shooting-mat",
+      "company": "Creedmoor Sports",
+      "name": "Shooting Mat",
+      "msrp": 0,
+      "cost": 0
+    },
+    {
+      "id": "bipod",
+      "company": "Harris",
+      "name": "Bipod",
+      "msrp": 0,
+      "cost": 0
+    },
+    {
+      "id": "rear-bag",
+      "company": "Armageddon Gear",
+      "name": "Rear Bag",
+      "msrp": 0,
+      "cost": 0
+    },
+    {
+      "id": "tripod",
+      "company": "Really Right Stuff",
+      "name": "Tripod",
+      "msrp": 0,
+      "cost": 0
+    },
+    {
+      "id": "data-card-holder",
+      "company": "Short Action Precision",
+      "name": "Data Card Holder",
+      "msrp": 0,
+      "cost": 0
+    },
+    {
+      "id": "rifle-bag",
+      "company": "TAB Gear",
+      "name": "Rifle Bag",
+      "msrp": 0,
+      "cost": 0
+    }
+  ],
+  "colors": [
+    {
+      "name": "Black",
+      "msrp": 0,
+      "cost": 0,
+      "id": "black"
+    },
+    {
+      "name": "FDE",
+      "msrp": 0,
+      "cost": 0,
+      "id": "fde"
+    },
+    {
+      "name": "ODG",
+      "msrp": 0,
+      "cost": 0,
+      "id": "odg"
+    },
+    {
+      "name": "Gray",
+      "msrp": 0,
+      "cost": 0,
+      "id": "gray"
+    },
+    {
+      "name": "Custom",
+      "msrp": 0,
+      "cost": 0,
+      "id": "custom"
+    }
+  ]
+}
